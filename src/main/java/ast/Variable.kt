@@ -3,7 +3,7 @@ package ast
 import ast.expression.Expression
 
 
-class Declaration(
+class Variable(
         position: Position,
         val _type: Type,
         val _name: String,
