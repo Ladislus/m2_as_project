@@ -1,13 +1,9 @@
 package utils
 
-import utils.ExitCode.info
-import utils.ExitCode
-import java.lang.System
+import kotlin.system.exitProcess
 
-object ErrorHandler {
-    fun exitWithError(exitCode: ExitCode) {
-        if (exitCode === ExitCode.OK) print
-        System.err.println(exitCode.info)
-        System.exit(exitCode.ordinal)
-    }
+fun exitWithCode(exitCode: ExitCode) {
+    if (exitCode == ExitCode.OK) print("Success")
+    else System.err.println(exitCode.info)
+    exitProcess(exitCode.ordinal)
 }

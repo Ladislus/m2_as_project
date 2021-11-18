@@ -1,399 +1,115 @@
 package utils
 
 import antlr.parser.WhileBaseVisitor
-import antlr.parser.WhileParser.ProgramContext
-import antlr.parser.WhileParser.DeclarationContext
-import antlr.parser.WhileParser.IdentifierDeclarationListContext
-import antlr.parser.WhileParser.VariablesDeclarationListContext
-import antlr.parser.WhileParser.VariablesDeclarationContext
-import antlr.parser.WhileParser.IdentifierListContext
-import antlr.parser.WhileParser.TypeContext
-import antlr.parser.WhileParser.SimpleStatementContext
-import antlr.parser.WhileParser.ParenthesizedStatementContext
-import antlr.parser.WhileParser.StatementsContext
-import antlr.parser.WhileParser.SkipStatementContext
-import antlr.parser.WhileParser.AssignmentStatementContext
-import antlr.parser.WhileParser.IfStatementContext
-import antlr.parser.WhileParser.WhileStatementContext
-import antlr.parser.WhileParser.CallStatementContext
-import antlr.parser.WhileParser.ArithmeticExpressionListContext
-import antlr.parser.WhileParser.ParenthesizedArithmeticExpressionContext
-import antlr.parser.WhileParser.MulDivArithmeticExpressionContext
-import antlr.parser.WhileParser.ConstantArithmeticExpressionContext
-import antlr.parser.WhileParser.IdentifierArithmeticExpressionContext
-import antlr.parser.WhileParser.AddSubArithmeticExpressionContext
-import antlr.parser.WhileParser.NegationArithmeticExpressionContext
-import antlr.parser.WhileParser.BooleanValueBooleanExpressionContext
-import antlr.parser.WhileParser.ComparitionBooleanExpressionContext
-import antlr.parser.WhileParser.NegationBooleanExpressionContext
-import antlr.parser.WhileParser.ParenthesizedBooleanExpressionContext
-import antlr.parser.WhileParser.ConstantContext
+import antlr.parser.WhileParser
 import ast.Node
-import ast.Position
-import org.antlr.v4.runtime.ParserRuleContext
 
-class ASTBuilder : WhileBaseVisitor<Node?>() {
-    override fun visitProgram(ctx: ProgramContext): Node {
-        return super.visitProgram(ctx)!!
+class ASTBuilder : WhileBaseVisitor<Node>() {
+    override fun visitProgram(ctx: WhileParser.ProgramContext): Node {
+        TODO("Not yet implemented")
     }
 
-    /**
-     * {@inheritDoc}
-     *
-     *
-     * The default implementation returns the result of calling
-     * [.visitChildren] on `ctx`.
-     *
-     * @param ctx
-     */
-    override fun visitDeclaration(ctx: DeclarationContext): Node {
-        return super.visitDeclaration(ctx)!!
+    override fun visitDeclaration(ctx: WhileParser.DeclarationContext): Node {
+        TODO("Not yet implemented")
     }
 
-    /**
-     * {@inheritDoc}
-     *
-     *
-     * The default implementation returns the result of calling
-     * [.visitChildren] on `ctx`.
-     *
-     * @param ctx
-     */
-    override fun visitIdentifierDeclarationList(ctx: IdentifierDeclarationListContext): Node {
-        return super.visitIdentifierDeclarationList(ctx)!!
+    override fun visitIdentifierDeclarationList(ctx: WhileParser.IdentifierDeclarationListContext): Node {
+        TODO("Not yet implemented")
     }
 
-    /**
-     * {@inheritDoc}
-     *
-     *
-     * The default implementation returns the result of calling
-     * [.visitChildren] on `ctx`.
-     *
-     * @param ctx
-     */
-    override fun visitVariablesDeclarationList(ctx: VariablesDeclarationListContext): Node {
-        return super.visitVariablesDeclarationList(ctx)!!
+    override fun visitVariablesDeclarationList(ctx: WhileParser.VariablesDeclarationListContext): Node {
+        TODO("Not yet implemented")
     }
 
-    /**
-     * {@inheritDoc}
-     *
-     *
-     * The default implementation returns the result of calling
-     * [.visitChildren] on `ctx`.
-     *
-     * @param ctx
-     */
-    override fun visitVariablesDeclaration(ctx: VariablesDeclarationContext): Node {
-        return super.visitVariablesDeclaration(ctx)!!
+    override fun visitVariablesDeclaration(ctx: WhileParser.VariablesDeclarationContext): Node {
+        TODO("Not yet implemented")
     }
 
-    /**
-     * {@inheritDoc}
-     *
-     *
-     * The default implementation returns the result of calling
-     * [.visitChildren] on `ctx`.
-     *
-     * @param ctx
-     */
-    override fun visitIdentifierList(ctx: IdentifierListContext): Node {
-        return super.visitIdentifierList(ctx)!!
+    override fun visitIdentifierList(ctx: WhileParser.IdentifierListContext): Node {
+        TODO("Not yet implemented")
     }
 
-    /**
-     * {@inheritDoc}
-     *
-     *
-     * The default implementation returns the result of calling
-     * [.visitChildren] on `ctx`.
-     *
-     * @param ctx
-     */
-    override fun visitType(ctx: TypeContext): Node {
-        return super.visitType(ctx)!!
+    override fun visitType(ctx: WhileParser.TypeContext): Node {
+        TODO("Not yet implemented")
     }
 
-    /**
-     * {@inheritDoc}
-     *
-     *
-     * The default implementation returns the result of calling
-     * [.visitChildren] on `ctx`.
-     *
-     * @param ctx
-     */
-    override fun visitSimpleStatement(ctx: SimpleStatementContext): Node {
-        return super.visitSimpleStatement(ctx)!!
+    override fun visitSimpleStatement(ctx: WhileParser.SimpleStatementContext): Node {
+        TODO("Not yet implemented")
     }
 
-    /**
-     * {@inheritDoc}
-     *
-     *
-     * The default implementation returns the result of calling
-     * [.visitChildren] on `ctx`.
-     *
-     * @param ctx
-     */
-    override fun visitParenthesizedStatement(ctx: ParenthesizedStatementContext): Node {
-        return super.visitParenthesizedStatement(ctx)!!
+    override fun visitParenthesizedStatement(ctx: WhileParser.ParenthesizedStatementContext): Node {
+        TODO("Not yet implemented")
     }
 
-    /**
-     * {@inheritDoc}
-     *
-     *
-     * The default implementation returns the result of calling
-     * [.visitChildren] on `ctx`.
-     *
-     * @param ctx
-     */
-    override fun visitStatements(ctx: StatementsContext): Node {
-        return super.visitStatements(ctx)!!
+    override fun visitStatements(ctx: WhileParser.StatementsContext): Node {
+        TODO("Not yet implemented")
     }
 
-    /**
-     * {@inheritDoc}
-     *
-     *
-     * The default implementation returns the result of calling
-     * [.visitChildren] on `ctx`.
-     *
-     * @param ctx
-     */
-    override fun visitSkipStatement(ctx: SkipStatementContext): Node {
-        return super.visitSkipStatement(ctx)!!
+    override fun visitSkipStatement(ctx: WhileParser.SkipStatementContext): Node {
+        TODO("Not yet implemented")
     }
 
-    /**
-     * {@inheritDoc}
-     *
-     *
-     * The default implementation returns the result of calling
-     * [.visitChildren] on `ctx`.
-     *
-     * @param ctx
-     */
-    override fun visitAssignmentStatement(ctx: AssignmentStatementContext): Node {
-        return super.visitAssignmentStatement(ctx)!!
+    override fun visitIfStatement(ctx: WhileParser.IfStatementContext): Node {
+        TODO("Not yet implemented")
     }
 
-    /**
-     * {@inheritDoc}
-     *
-     *
-     * The default implementation returns the result of calling
-     * [.visitChildren] on `ctx`.
-     *
-     * @param ctx
-     */
-    override fun visitIfStatement(ctx: IfStatementContext): Node {
-        return super.visitIfStatement(ctx)!!
+    override fun visitWhileStatement(ctx: WhileParser.WhileStatementContext): Node {
+        TODO("Not yet implemented")
     }
 
-    /**
-     * {@inheritDoc}
-     *
-     *
-     * The default implementation returns the result of calling
-     * [.visitChildren] on `ctx`.
-     *
-     * @param ctx
-     */
-    override fun visitWhileStatement(ctx: WhileStatementContext): Node {
-        return super.visitWhileStatement(ctx)!!
+    override fun visitCallStatement(ctx: WhileParser.CallStatementContext): Node {
+        TODO("Not yet implemented")
     }
 
-    /**
-     * {@inheritDoc}
-     *
-     *
-     * The default implementation returns the result of calling
-     * [.visitChildren] on `ctx`.
-     *
-     * @param ctx
-     */
-    override fun visitCallStatement(ctx: CallStatementContext): Node {
-        return super.visitCallStatement(ctx)!!
+    override fun visitAssignmentStatement(ctx: WhileParser.AssignmentStatementContext): Node {
+        TODO("Not yet implemented")
     }
 
-    /**
-     * {@inheritDoc}
-     *
-     *
-     * The default implementation returns the result of calling
-     * [.visitChildren] on `ctx`.
-     *
-     * @param ctx
-     */
-    override fun visitArithmeticExpressionList(ctx: ArithmeticExpressionListContext): Node {
-        return super.visitArithmeticExpressionList(ctx)!!
+    override fun visitArithmeticExpressionList(ctx: WhileParser.ArithmeticExpressionListContext): Node {
+        TODO("Not yet implemented")
     }
 
-    /**
-     * {@inheritDoc}
-     *
-     *
-     * The default implementation returns the result of calling
-     * [.visitChildren] on `ctx`.
-     *
-     * @param ctx
-     */
-    override fun visitParenthesizedArithmeticExpression(ctx: ParenthesizedArithmeticExpressionContext): Node {
-        return super.visitParenthesizedArithmeticExpression(ctx)!!
+    override fun visitParenthesizedArithmeticExpression(ctx: WhileParser.ParenthesizedArithmeticExpressionContext): Node {
+        TODO("Not yet implemented")
     }
 
-    /**
-     * {@inheritDoc}
-     *
-     *
-     * The default implementation returns the result of calling
-     * [.visitChildren] on `ctx`.
-     *
-     * @param ctx
-     */
-    override fun visitMulDivArithmeticExpression(ctx: MulDivArithmeticExpressionContext): Node {
-        return super.visitMulDivArithmeticExpression(ctx)!!
+    override fun visitMulDivArithmeticExpression(ctx: WhileParser.MulDivArithmeticExpressionContext): Node {
+        TODO("Not yet implemented")
     }
 
-    /**
-     * {@inheritDoc}
-     *
-     *
-     * The default implementation returns the result of calling
-     * [.visitChildren] on `ctx`.
-     *
-     * @param ctx
-     */
-    override fun visitConstantArithmeticExpression(ctx: ConstantArithmeticExpressionContext): Node {
-        return super.visitConstantArithmeticExpression(ctx)!!
+    override fun visitConstantArithmeticExpression(ctx: WhileParser.ConstantArithmeticExpressionContext): Node {
+        TODO("Not yet implemented")
     }
 
-    /**
-     * {@inheritDoc}
-     *
-     *
-     * The default implementation returns the result of calling
-     * [.visitChildren] on `ctx`.
-     *
-     * @param ctx
-     */
-    override fun visitIdentifierArithmeticExpression(ctx: IdentifierArithmeticExpressionContext): Node {
-        return super.visitIdentifierArithmeticExpression(ctx)!!
+    override fun visitIdentifierArithmeticExpression(ctx: WhileParser.IdentifierArithmeticExpressionContext): Node {
+        TODO("Not yet implemented")
     }
 
-    /**
-     * {@inheritDoc}
-     *
-     *
-     * The default implementation returns the result of calling
-     * [.visitChildren] on `ctx`.
-     *
-     * @param ctx
-     */
-    override fun visitAddSubArithmeticExpression(ctx: AddSubArithmeticExpressionContext): Node {
-        return super.visitAddSubArithmeticExpression(ctx)!!
+    override fun visitAddSubArithmeticExpression(ctx: WhileParser.AddSubArithmeticExpressionContext): Node {
+        TODO("Not yet implemented")
     }
 
-    /**
-     * {@inheritDoc}
-     *
-     *
-     * The default implementation returns the result of calling
-     * [.visitChildren] on `ctx`.
-     *
-     * @param ctx
-     */
-    override fun visitNegationArithmeticExpression(ctx: NegationArithmeticExpressionContext): Node {
-        return super.visitNegationArithmeticExpression(ctx)!!
+    override fun visitNegationArithmeticExpression(ctx: WhileParser.NegationArithmeticExpressionContext): Node {
+        TODO("Not yet implemented")
     }
 
-    /**
-     * {@inheritDoc}
-     *
-     *
-     * The default implementation returns the result of calling
-     * [.visitChildren] on `ctx`.
-     *
-     * @param ctx
-     */
-    override fun visitBooleanValueBooleanExpression(ctx: BooleanValueBooleanExpressionContext): Node {
-        return super.visitBooleanValueBooleanExpression(ctx)!!
+    override fun visitBooleanValueBooleanExpression(ctx: WhileParser.BooleanValueBooleanExpressionContext): Node {
+        TODO("Not yet implemented")
     }
 
-    /**
-     * {@inheritDoc}
-     *
-     *
-     * The default implementation returns the result of calling
-     * [.visitChildren] on `ctx`.
-     *
-     * @param ctx
-     */
-    override fun visitComparitionBooleanExpression(ctx: ComparitionBooleanExpressionContext): Node {
-        return super.visitComparitionBooleanExpression(ctx)!!
+    override fun visitComparisonBooleanExpression(ctx: WhileParser.ComparisonBooleanExpressionContext): Node {
+        TODO("Not yet implemented")
     }
 
-    /**
-     * {@inheritDoc}
-     *
-     *
-     * The default implementation returns the result of calling
-     * [.visitChildren] on `ctx`.
-     *
-     * @param ctx
-     */
-    override fun visitNegationBooleanExpression(ctx: NegationBooleanExpressionContext): Node {
-        return super.visitNegationBooleanExpression(ctx)!!
+    override fun visitNegationBooleanExpression(ctx: WhileParser.NegationBooleanExpressionContext): Node {
+        TODO("Not yet implemented")
     }
 
-    /**
-     * {@inheritDoc}
-     *
-     *
-     * The default implementation returns the result of calling
-     * [.visitChildren] on `ctx`.
-     *
-     * @param ctx
-     */
-    override fun visitParenthesizedBooleanExpression(ctx: ParenthesizedBooleanExpressionContext): Node {
-        return super.visitParenthesizedBooleanExpression(ctx)!!
+    override fun visitParenthesizedBooleanExpression(ctx: WhileParser.ParenthesizedBooleanExpressionContext): Node {
+        TODO("Not yet implemented")
     }
 
-    /**
-     * {@inheritDoc}
-     *
-     *
-     * The default implementation returns the result of calling
-     * [.visitChildren] on `ctx`.
-     *
-     * @param ctx
-     */
-    fun visitIdentifier(ctx: WhileParser.IdentifierContext?): Node {
-        return super.visitIdentifier(ctx)
-    }
-
-    /**
-     * {@inheritDoc}
-     *
-     *
-     * The default implementation returns the result of calling
-     * [.visitChildren] on `ctx`.
-     *
-     * @param ctx
-     */
-    override fun visitConstant(ctx: ConstantContext): Node {
-        return super.visitConstant(ctx)!!
-    }
-
-    companion object {
-        private fun position(ctx: ParserRuleContext): Position {
-            return Position(
-                ctx.start.line,
-                ctx.start.charPositionInLine
-            )
-        }
+    override fun visitConstant(ctx: WhileParser.ConstantContext): Node {
+        TODO("Not yet implemented")
     }
 }
