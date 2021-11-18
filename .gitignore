@@ -4,4 +4,4 @@ gradle
 build
 gradlew
 gradlew.bat
-src/main/antlr/parser/
+src/main/java/antlr/parser
