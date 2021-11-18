@@ -2,11 +2,31 @@ package utils
 
 import antlr.parser.WhileBaseVisitor
 import antlr.parser.WhileParser
-import ast.Node
+import ast.*
+import ast.statement.Statement
+import org.antlr.v4.runtime.ParserRuleContext
 
 class ASTBuilder : WhileBaseVisitor<Node>() {
+
+    @Suppress("UNCHECKED_CAST")
+    private fun <T> makeList(contexts: List<ParserRuleContext>): List<T> {
+        val nodes: MutableList<T> = mutableListOf()
+        for (ctx: ParserRuleContext in contexts) nodes += ctx.accept(this) as T
+        return nodes
+    }
+
+    private fun makePosition(ctx: ParserRuleContext): Position {
+        return Position(ctx.start.line, ctx.start.charPositionInLine)
+    }
+
     override fun visitProgram(ctx: WhileParser.ProgramContext): Node {
+        val procedures: List<Procedure> = makeList(ctx.declaration())
+        val variables: List<Variable> = makeList(listOf(ctx.variablesDeclarationList()))
+        val statements: List<Statement> = makeList(listOf(ctx.statements()))
+
         TODO("Not yet implemented")
+
+        return Program(makePosition(ctx), ctx.Identifier().text ,procedures, variables, statements)
     }
 
     override fun visitDeclaration(ctx: WhileParser.DeclarationContext): Node {
