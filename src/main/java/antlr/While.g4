@@ -2,25 +2,25 @@ grammar While;
 
 // ########### GRAMMAR ###########
 
-program: Program identifier declaration* Begin variablesDeclarationList statements End EOF;
-declaration: Proc identifier OpenedParenthesis identifierDeclarationList (Comma Res type identifier)? ClosedParenthesis Begin statements End;
-identifierDeclarationList: type identifier (Comma type identifier)*;
+program: Program Identifier? declaration* Begin variablesDeclarationList statements End EOF;
+declaration: Proc Identifier OpenedParenthesis identifierDeclarationList (Comma Res type Identifier)? ClosedParenthesis Begin statements End;
+identifierDeclarationList: type Identifier (Comma type Identifier)*;
 variablesDeclarationList: variablesDeclaration variablesDeclarationList*;
 variablesDeclaration: type identifierList Semicolon;
-identifierList: identifier (Comma identifier)*;
+identifierList: Identifier (Comma Identifier)*;
 type: Type;
 block: statement                                                                                                                                # SimpleStatement
         | OpenedParenthesis statements ClosedParenthesis                                                                                        # ParenthesizedStatement
         ;
 statements: statement (Semicolon statements)*;
 statement: Skip                                                                                                                                 # SkipStatement
-        | identifier Assign arithmeticExpression                                                                                                # AssignmentStatement
         | If booleanExpression Then block (Else block)?                                                                                         # IfStatement
         | While booleanExpression Do block                                                                                                      # WhileStatement
-        | Call identifier OpenedParenthesis arithmeticExpressionList ClosedParenthesis                                                          # CallStatement
+        | Call Identifier OpenedParenthesis arithmeticExpressionList ClosedParenthesis                                                          # CallStatement
+        | Identifier Assign arithmeticExpression                                                                                                # AssignmentStatement
         ;
 arithmeticExpressionList: arithmeticExpression (Comma arithmeticExpression)*;
-arithmeticExpression: identifier                                                                                                                # IdentifierArithmeticExpression
+arithmeticExpression: Identifier                                                                                                                # IdentifierArithmeticExpression
         | constant                                                                                                                              # ConstantArithmeticExpression
         | arithmeticExpression op=(Multiplication | Division) arithmeticExpression                                                              # MulDivArithmeticExpression
         | arithmeticExpression op=(Plus | Minus) arithmeticExpression                                                                           # AddSubArithmeticExpression
@@ -32,7 +32,6 @@ booleanExpression: BooleanValue                                                 
         | Negation booleanExpression                                                                                                            # NegationBooleanExpression
         | OpenedParenthesis booleanExpression ClosedParenthesis                                                                                 # ParenthesizedBooleanExpression
         ;
-identifier: Characters (Characters | Underscore)*;
 constant: IntegerValue;
 
 // ########### CONSTANTS ###########
@@ -80,11 +79,6 @@ BooleanValue: True | False;
 True: 'true';
 False: 'false';
 
-IntegerValue: Digit+;
-Digit:  [0-9];
-Characters: [a-z];
-
-
 // Control
 If : 'if';
 While : 'while';
@@ -92,5 +86,11 @@ Do : 'do';
 Else : 'else';
 Then: 'then';
 Skip: 'skip';
+
+// Identifiers & Constants
+Identifier: Characters (Characters | Underscore | Digit)*;
+IntegerValue: Digit+;
+Digit:  [0-9];
+Characters: [a-z];
 
 WS: [ \t\r\n]+ -> skip;
