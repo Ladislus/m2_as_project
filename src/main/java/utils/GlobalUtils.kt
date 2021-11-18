@@ -7,6 +7,13 @@ import ast.Program
 import org.antlr.v4.runtime.CommonTokenStream
 import org.antlr.v4.runtime.tree.ParseTree
 import java.io.*
+import kotlin.system.exitProcess
+
+fun exitWithCode(exitCode: ExitCode) {
+    if (exitCode == ExitCode.OK) print("Success")
+    else System.err.println(exitCode.info)
+    exitProcess(exitCode.ordinal)
+}
 
 
 private fun getInputStream(filepath: String): InputStream? {
