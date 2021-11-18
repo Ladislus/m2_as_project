@@ -5,5 +5,5 @@ import ast.Position
 class UnaryBooleanExpression(
         position: Position,
         val _expression: BooleanExpression,
-        val _operator: BooleanOperator,
+        val _operator: UnaryBooleanOperator = UnaryBooleanOperator.NOT,
         ) : BooleanExpression(position)

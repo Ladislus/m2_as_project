@@ -1,6 +1,6 @@
 package ast.expression.bool
 
-enum class BooleanOperator(val _representation: String) {
+enum class BinaryBooleanOperator(val _representation: String) {
     LESS("<"),
     LESS_EQUAL("<="),
     EQUAL("="),
@@ -9,14 +9,25 @@ enum class BooleanOperator(val _representation: String) {
     DIFFERENT("<>");
 }
 
-fun BooleanOperatorFromString(representation: String): BooleanOperator {
+fun binaryBooleanOperatorFromString(representation: String): BinaryBooleanOperator {
     return when (representation) {
-        "<" -> BooleanOperator.LESS
-        "<=" -> BooleanOperator.LESS_EQUAL
-        "=" -> BooleanOperator.EQUAL
-        ">=" -> BooleanOperator.GREATER_EQUAL
-        ">" -> BooleanOperator.GREATER
-        "<>" -> BooleanOperator.DIFFERENT
-        else -> throw IllegalArgumentException("Unknown boolean operator: $representation")
+        "<" -> BinaryBooleanOperator.LESS
+        "<=" -> BinaryBooleanOperator.LESS_EQUAL
+        "=" -> BinaryBooleanOperator.EQUAL
+        ">=" -> BinaryBooleanOperator.GREATER_EQUAL
+        ">" -> BinaryBooleanOperator.GREATER
+        "<>" -> BinaryBooleanOperator.DIFFERENT
+        else -> throw IllegalArgumentException("Unknown binary boolean operator: $representation")
+    }
+}
+
+enum class UnaryBooleanOperator(val _representation: String) {
+    NOT("not");
+}
+
+fun unaryBooleanOperatorFromString(representation: String): UnaryBooleanOperator {
+    return when (representation) {
+        "not" -> UnaryBooleanOperator.NOT
+        else -> throw IllegalArgumentException("Unknown unary boolean operator: $representation")
     }
 }
