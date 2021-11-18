@@ -1,3 +1,3 @@
 package ast
 
-class Procedure(position: Position?) : Node(position!!)
+class Procedure(position: Position) : Node(position)

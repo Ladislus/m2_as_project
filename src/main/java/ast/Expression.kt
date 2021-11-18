@@ -1,3 +1,3 @@
 package ast
 
-abstract class Expression : Node()
+abstract class Expression(position: Position) : Node(position)

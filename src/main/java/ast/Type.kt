@@ -1,3 +1,3 @@
 package ast
 
-class Type(position: Position?) : Node(position)
+class Type(position: Position) : Node(position)

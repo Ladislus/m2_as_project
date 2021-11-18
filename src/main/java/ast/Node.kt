@@ -1,3 +1,3 @@
 package ast
 
-abstract class Node(val position: Position)
+abstract class Node(val _position: Position)

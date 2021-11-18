@@ -1,3 +1,3 @@
 package ast
 
-class Position(val line: Int, val column: Int)
+class Position(val _line: Int, val _column: Int)
