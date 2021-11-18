@@ -1,0 +1,9 @@
+program p4
+begin
+int x, y;
+int[10] t;
+x := 0; y := 0;
+while (x < 10) do (
+    y := y + t[x]; x := x+1
+)
+end

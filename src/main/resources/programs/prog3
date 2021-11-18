@@ -1,0 +1,10 @@
+program
+proc fib(int z, int u, res int v)
+    begin
+        if z < 3 then v := u+1
+            else (call fib(z-1, u, v); call fib(z-2, v, v))
+    end
+begin
+int x, y;
+call fib(x, 0, y)
+end
