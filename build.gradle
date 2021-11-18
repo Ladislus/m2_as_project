@@ -13,7 +13,7 @@ repositories {
 dependencies {
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.7.0'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.7.0'
-    antlr 'org.antlr:antlr4:4.9.1'
+    antlr 'org.antlr:antlr4:4.9.3'
 }
 
 test {
