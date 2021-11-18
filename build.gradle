@@ -1,6 +1,7 @@
 plugins {
     id 'java'
     id 'antlr'
+    id 'org.jetbrains.kotlin.jvm' version '1.6.0'
 }
 
 group 'fr.ladislus'
@@ -11,11 +12,25 @@ repositories {
 }
 
 dependencies {
-    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.7.0'
-    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.7.0'
     antlr 'org.antlr:antlr4:4.9.3'
+    implementation 'org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.6.0'
 }
 
-test {
-    useJUnitPlatform()
+compileKotlin {
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
 }
+compileTestKotlin {
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
+}
+
+generateGrammarSource {
+    maxHeapSize = "64m"
+    arguments += ['-package', 'antlr.parser', '-encoding', 'utf-8', '-Dlanguage=Java']
+    outputDirectory = new File("src/main/java/antlr/parser".toString())
+}
+compileJava.dependsOn generateGrammarSource
+compileKotlin.dependsOn generateGrammarSource

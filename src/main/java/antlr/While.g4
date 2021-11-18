@@ -28,7 +28,7 @@ arithmeticExpression: Identifier                                                
         | OpenedParenthesis arithmeticExpression ClosedParenthesis                                                                              # ParenthesizedArithmeticExpression
         ;
 booleanExpression: BooleanValue                                                                                                                 # BooleanValueBooleanExpression
-        | arithmeticExpression op=(GreaterThan | GreaterOrEqual | Equal | LesserThan | LesserOrEqual | Different) arithmeticExpression          # ComparitionBooleanExpression
+        | arithmeticExpression op=(GreaterThan | GreaterOrEqual | Equal | LesserThan | LesserOrEqual | Different) arithmeticExpression          # ComparisonBooleanExpression
         | Negation booleanExpression                                                                                                            # NegationBooleanExpression
         | OpenedParenthesis booleanExpression ClosedParenthesis                                                                                 # ParenthesizedBooleanExpression
         ;
