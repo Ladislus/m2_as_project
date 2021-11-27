@@ -6,7 +6,7 @@ import ast.expression.arithmetic.ArithmeticExpression
 import ast.expression.bool.BooleanExpression
 import ast.statement.Statement
 
-abstract class DefaultVisitor<T> : Visitor<T> {
+abstract class DefaultVisitor<T> : IVisitor<T> {
     override fun visit(node: Node): T =
         raiseIllegalStateExceptionWithClass(node::class)
 

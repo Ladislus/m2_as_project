@@ -6,7 +6,7 @@ import ast.expression.arithmetic.*
 import ast.expression.bool.*
 import ast.statement.*
 
-interface Visitor<T> {
+interface IVisitor<T> {
     fun visit(node: Node): T
     fun visit(program: Program): T
     fun visit(procedure: Procedure): T

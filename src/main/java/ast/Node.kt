@@ -1,9 +1,9 @@
 package ast
 
-import visitor.Visitor
+import visitor.IVisitor
 
 abstract class Node(val _position: Position) {
-    fun <T> accept(visitor: Visitor<T>): T {
+    fun <T> accept(visitor: IVisitor<T>): T {
         return visitor.visit(this)
     }
 }
