@@ -11,6 +11,6 @@ fun typeFromString(representation: String) : PossibleTypes {
     return when(representation) {
         "int" -> PossibleTypes.INT
         "bool" -> PossibleTypes.BOOL
-        else -> throw Exception("Unknown type: $representation")
+        else -> throw IllegalArgumentException("Unknown type: $representation")
     }
 }
