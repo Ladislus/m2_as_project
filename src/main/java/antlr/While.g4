@@ -2,37 +2,43 @@ grammar While;
 
 // ########### GRAMMAR ###########
 
-program: Program Identifier? declaration* Begin variablesDeclarationList statements End EOF;
-declaration: Proc Identifier OpenedParenthesis identifierDeclarationList (Comma Res type Identifier)? ClosedParenthesis Begin statements End;
-identifierDeclarationList: type Identifier (Comma type Identifier)*;
-variablesDeclarationList: variablesDeclaration variablesDeclarationList*;
+program: Program programName=Identifier? procedureDeclaration* Begin variablesDeclaration* statementList End EOF;
+procedureDeclaration: Proc procedureName=Identifier OpenedParenthesis identifierDeclarationList (Comma Res returnType=type returnIdentifier=Identifier)? ClosedParenthesis Begin statementList End;
+
+identifierDeclarationList: identifierDeclaration (Comma identifierDeclaration)*;
+identifierDeclaration: type Identifier;
+
 variablesDeclaration: type identifierList Semicolon;
 identifierList: Identifier (Comma Identifier)*;
 type: Type;
-block: statement                                                                                                                                # SimpleStatement
-        | OpenedParenthesis statements ClosedParenthesis                                                                                        # ParenthesizedStatement
+
+block: statement                                                                                                                                                # SimpleStatement
+        | OpenedParenthesis statementList ClosedParenthesis                                                                                                     # ParenthesizedStatement
         ;
-statements: statement (Semicolon statements)*;
-statement: Skip                                                                                                                                 # SkipStatement
-        | If booleanExpression Then block (Else block)?                                                                                         # IfStatement
-        | While booleanExpression Do block                                                                                                      # WhileStatement
-        | Call Identifier OpenedParenthesis arithmeticExpressionList ClosedParenthesis                                                          # CallStatement
-        | Identifier Assign arithmeticExpression                                                                                                # AssignmentStatement
+statementList: statement (Semicolon statement)*;
+statement: Skip                                                                                                                                                 # SkipStatement
+        | If booleanExpression Then thenBlock=block (Else elseBlock=block)                                                                                      # IfStatement
+        | While booleanExpression Do block                                                                                                                      # WhileStatement
+        | Call Identifier OpenedParenthesis arithmeticExpressionList ClosedParenthesis                                                                          # CallStatement
+        | Identifier Assign arithmeticExpression                                                                                                                # AssignmentStatement
         ;
+
 arithmeticExpressionList: arithmeticExpression (Comma arithmeticExpression)*;
-arithmeticExpression: Identifier                                                                                                                # IdentifierArithmeticExpression
-        | constant                                                                                                                              # ConstantArithmeticExpression
-        | arithmeticExpression op=(Multiplication | Division) arithmeticExpression                                                              # MulDivArithmeticExpression
-        | arithmeticExpression op=(Plus | Minus) arithmeticExpression                                                                           # AddSubArithmeticExpression
-        | Minus arithmeticExpression                                                                                                            # NegationArithmeticExpression
-        | OpenedParenthesis arithmeticExpression ClosedParenthesis                                                                              # ParenthesizedArithmeticExpression
+arithmeticExpression: Identifier                                                                                                                                # IdentifierArithmeticExpression
+        | constant                                                                                                                                              # ConstantArithmeticExpression
+        | leftSide=arithmeticExpression op=(Multiplication | Division) rightSide=arithmeticExpression                                                           # MulDivArithmeticExpression
+        | leftSide=arithmeticExpression op=(Plus | Minus) rightSide=arithmeticExpression                                                                        # AddSubArithmeticExpression
+        | Minus arithmeticExpression                                                                                                                            # NegationArithmeticExpression
+        | OpenedParenthesis arithmeticExpression ClosedParenthesis                                                                                              # ParenthesizedArithmeticExpression
         ;
-booleanExpression: BooleanValue                                                                                                                 # BooleanValueBooleanExpression
-        | arithmeticExpression op=(GreaterThan | GreaterOrEqual | Equal | LesserThan | LesserOrEqual | Different) arithmeticExpression          # ComparisonBooleanExpression
-        | Negation booleanExpression                                                                                                            # NegationBooleanExpression
-        | OpenedParenthesis booleanExpression ClosedParenthesis                                                                                 # ParenthesizedBooleanExpression
+
+booleanExpression: BooleanValue                                                                                                                                 # BooleanValueBooleanExpression
+        | leftSide=arithmeticExpression op=(GreaterThan | GreaterOrEqual | Equal | LesserThan | LesserOrEqual | Different) rightSide=arithmeticExpression       # ComparisonBooleanExpression
+        | Negation booleanExpression                                                                                                                            # NegationBooleanExpression
+        | OpenedParenthesis booleanExpression ClosedParenthesis                                                                                                 # ParenthesizedBooleanExpression
         ;
-constant: IntegerValue;
+
+constant: Minus? IntegerValue;
 
 // ########### CONSTANTS ###########
 
