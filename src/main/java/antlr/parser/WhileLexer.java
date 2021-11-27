@@ -1,4 +1,4 @@
-// Generated from C:/Users/Darky/Desktop/m2_as_project/src/main/java/antlr\While.g4 by ANTLR 4.9.2
+// Generated from /home/ladislus/Documents/Master IMIS/M2/S3/AS/Project/src/main/java/antlr/While.g4 by ANTLR 4.9.2
 package antlr.parser;
 import org.antlr.v4.runtime.Lexer;
 import org.antlr.v4.runtime.CharStream;

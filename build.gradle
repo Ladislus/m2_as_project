@@ -26,11 +26,3 @@ compileTestKotlin {
         jvmTarget = "1.8"
     }
 }
-
-generateGrammarSource {
-    maxHeapSize = "64m"
-    arguments += ['-package', 'antlr.parser', '-encoding', 'utf-8', '-Dlanguage=Java']
-    outputDirectory = new File("src/main/java/antlr/parser".toString())
-}
-compileJava.dependsOn generateGrammarSource
-compileKotlin.dependsOn generateGrammarSource

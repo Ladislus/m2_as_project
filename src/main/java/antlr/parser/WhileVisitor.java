@@ -1,4 +1,4 @@
-// Generated from C:/Users/Darky/Desktop/m2_as_project/src/main/java/antlr\While.g4 by ANTLR 4.9.2
+// Generated from /home/ladislus/Documents/Master IMIS/M2/S3/AS/Project/src/main/java/antlr/While.g4 by ANTLR 4.9.2
 package antlr.parser;
 import org.antlr.v4.runtime.tree.ParseTreeVisitor;
 
@@ -17,11 +17,11 @@ public interface WhileVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitProgram(WhileParser.ProgramContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link WhileParser#declaration}.
+	 * Visit a parse tree produced by {@link WhileParser#procedureDeclaration}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitDeclaration(WhileParser.DeclarationContext ctx);
+	T visitProcedureDeclaration(WhileParser.ProcedureDeclarationContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link WhileParser#identifierDeclarationList}.
 	 * @param ctx the parse tree
@@ -29,11 +29,11 @@ public interface WhileVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitIdentifierDeclarationList(WhileParser.IdentifierDeclarationListContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link WhileParser#variablesDeclarationList}.
+	 * Visit a parse tree produced by {@link WhileParser#identifierDeclaration}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitVariablesDeclarationList(WhileParser.VariablesDeclarationListContext ctx);
+	T visitIdentifierDeclaration(WhileParser.IdentifierDeclarationContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link WhileParser#variablesDeclaration}.
 	 * @param ctx the parse tree
@@ -67,11 +67,11 @@ public interface WhileVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitParenthesizedStatement(WhileParser.ParenthesizedStatementContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link WhileParser#statements}.
+	 * Visit a parse tree produced by {@link WhileParser#statementList}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitStatements(WhileParser.StatementsContext ctx);
+	T visitStatementList(WhileParser.StatementListContext ctx);
 	/**
 	 * Visit a parse tree produced by the {@code SkipStatement}
 	 * labeled alternative in {@link WhileParser#statement}.
