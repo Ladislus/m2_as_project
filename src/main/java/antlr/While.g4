@@ -1,5 +1,9 @@
 grammar While;
 
+options {
+    language = Java;
+}
+
 // ########### GRAMMAR ###########
 
 program: Program programName=Identifier? procedureDeclaration* Begin variablesDeclaration* statementList End EOF;
