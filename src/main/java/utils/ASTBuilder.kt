@@ -198,6 +198,8 @@ class ASTBuilder : WhileBaseVisitor<Node>() {
     override fun visitConstant(ctx: WhileParser.ConstantContext): Node =
         ArithmeticConstant(
             makePosition(ctx),
-            ctx.IntegerValue().text.toInt()
+            ctx.Minus()?.let{
+                -ctx.IntegerValue().text.toInt()
+            } ?: ctx.IntegerValue().text.toInt()
         )
 }

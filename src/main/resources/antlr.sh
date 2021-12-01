@@ -1,0 +1,1 @@
+antlr4 -o ../java/antlr/parser -package antlr.parser -encoding utf-8 -visitor -no-listener -lib ../java/antlr ../java/antlr/While.g4
