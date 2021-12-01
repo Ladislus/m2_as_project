@@ -26,7 +26,7 @@ interface IVisitor<T> {
     fun visit(booleanConstant: BooleanConstant): T
     fun visit(statement: Statement): T
     fun visit(assignStatement: AssignStatement): T
-    fun visit(callStatement: CallStatement)
+    fun visit(callStatement: CallStatement): T
     fun visit(ifStatement: IfStatement): T
     fun visit(skipStatement: SkipStatement): T
     fun visit(whileStatement: WhileStatement): T
