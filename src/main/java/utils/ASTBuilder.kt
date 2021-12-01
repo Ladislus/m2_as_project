@@ -68,6 +68,7 @@ class ASTBuilder : WhileBaseVisitor<Node>() {
                 type,
                 identifier.text
             )
+        // FIXME : VariableBlock stored inside Program._variables (Cause error later in visitor)
         return VariableBlock(
             makePosition(ctx),
             variables
