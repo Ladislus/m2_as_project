@@ -16,7 +16,7 @@ import visitor.DefaultVisitor
 class Printer: DefaultVisitor<String>() {
 
     override fun visit(program: Program): String {
-        var result = "program ${program._identifier}\n"
+        var result = "program ${program._identifier ?: ""}\n"
         program._procedures.forEach { result += it.accept(this) + "\n" }
         result += "begin\n"
         program._variables.forEach { result += it.accept(this) + "\n" }
