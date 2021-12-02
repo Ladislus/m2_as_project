@@ -1,12 +1,11 @@
-package ast.expression.bool
+package ast.declaration
 
-import ast.Node
 import ast.Position
 import visitor.IVisitor
 
-class BooleanConstant(
+class VariableBlock(
         position: Position,
-        val _value: Boolean
-        ): Node(position) {
+        val _variables: List<Variable>
+        ): Declaration(position) {
     override fun <T> accept(visitor: IVisitor<T>): T = visitor.visit(this)
 }

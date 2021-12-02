@@ -3,6 +3,8 @@ package utils
 import antlr.parser.WhileBaseVisitor
 import antlr.parser.WhileParser
 import ast.*
+import ast.declaration.Variable
+import ast.declaration.VariableBlock
 import ast.expression.arithmetic.IdentifierExpression
 import ast.expression.arithmetic.*
 import ast.expression.bool.*
