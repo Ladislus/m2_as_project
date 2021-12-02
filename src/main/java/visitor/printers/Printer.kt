@@ -1,4 +1,4 @@
-package visitor
+package visitor.printers
 
 import ast.*
 import ast.declaration.Variable
@@ -11,6 +11,7 @@ import ast.expression.bool.BinaryBooleanExpression
 import ast.expression.bool.BooleanConstant
 import ast.expression.bool.UnaryBooleanExpression
 import ast.statement.*
+import visitor.DefaultVisitor
 
 class Printer: DefaultVisitor<String>() {
 
