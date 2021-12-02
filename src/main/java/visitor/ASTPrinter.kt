@@ -1,6 +1,8 @@
 package visitor
 
 import ast.*
+import ast.declaration.Variable
+import ast.declaration.VariableBlock
 import ast.expression.arithmetic.ArithmeticConstant
 import ast.expression.arithmetic.BinaryArithmeticExpression
 import ast.expression.arithmetic.IdentifierExpression
@@ -86,4 +88,7 @@ class ASTPrinter: DefaultVisitor<String>() {
 
     override fun visit(whileStatement: WhileStatement) =
         "while ${whileStatement._condition.accept(this)} do\n${whileStatement._body.accept(this)}"
+
+    override fun visit(block: Block): String =
+        block._statements.joinToString("\n") { "\t" + it.accept(this) }
 }
