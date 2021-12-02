@@ -3,6 +3,8 @@ package utils
 import antlr.parser.WhileBaseVisitor
 import antlr.parser.WhileParser
 import ast.*
+import ast.declaration.Variable
+import ast.declaration.VariableBlock
 import ast.expression.arithmetic.IdentifierExpression
 import ast.expression.arithmetic.*
 import ast.expression.bool.*
@@ -68,7 +70,6 @@ class ASTBuilder : WhileBaseVisitor<Node>() {
                 type,
                 identifier.text
             )
-        // FIXME : VariableBlock stored inside Program._variables (Cause error later in visitor)
         return VariableBlock(
             makePosition(ctx),
             variables

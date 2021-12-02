@@ -1,6 +1,9 @@
 package visitor
 
 import ast.*
+import ast.declaration.Declaration
+import ast.declaration.Variable
+import ast.declaration.VariableBlock
 import ast.expression.*
 import ast.expression.arithmetic.*
 import ast.expression.bool.*
@@ -12,6 +15,8 @@ interface IVisitor<T> {
     fun visit(procedure: Procedure): T
     fun visit(type: Type): T
     fun visit(position: Position): T
+    fun visit(block: Block): T
+    fun visit(declaration: Declaration): T
     fun visit(variable: Variable): T
     fun visit(variableBlock: VariableBlock): T
     fun visit(expression: Expression): T
