@@ -1,7 +1,7 @@
 import utils.ExitCode
 import utils.buildAST
 import utils.exitWithCode
-import visitor.Printer
+import visitor.printers.Printer
 
 fun main(args: Array<String>) {
     if (args.isEmpty()) exitWithCode(ExitCode.NO_INPUT_FILE)
