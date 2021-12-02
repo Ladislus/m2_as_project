@@ -7,6 +7,9 @@ import ast.expression.arithmetic.ArithmeticExpression
 import ast.expression.bool.BooleanExpression
 import ast.statement.Statement
 
+fun <T> raiseIllegalStateExceptionWithClass(clazz: Class<T>): Nothing =
+    throw IllegalStateException("Shouldn't be possible to reach visit(${clazz})")
+
 abstract class DefaultVisitor<T> : IVisitor<T> {
     override fun visit(node: Node): T =
         raiseIllegalStateExceptionWithClass(node::class.java)
