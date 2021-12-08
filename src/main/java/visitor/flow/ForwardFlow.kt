@@ -21,7 +21,10 @@ class ForwardFlow(
     private lateinit var _program: Program
 
     // IFlow Methods
-    override fun constructFlow(program: Program) { program.accept(this) }
+    override fun constructFlow(program: Program) {
+        this._program = program
+        program.accept(this)
+    }
     override fun hasNext(): Boolean = !_stack.isEmpty()
     override fun getNext(): Node {
         val node = this._stack.removeFirst()
@@ -41,9 +44,6 @@ class ForwardFlow(
     // Utility Methods end
 
     override fun visit(program: Program): List<Node> {
-
-        this._program = program
-
         // Procedure
         for (i in 0 until program._procedures.size - 1) {
             val current = program._procedures[i]

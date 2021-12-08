@@ -1,6 +1,8 @@
 import utils.ExitCode
 import utils.buildAST
 import utils.exitWithCode
+import visitor.flow.ForwardFlow
+import visitor.flow.IFlow
 import visitor.printers.ASTPrinter
 import visitor.printers.Printer
 
@@ -15,7 +17,12 @@ fun main(args: Array<String>) {
 
         println("############### AST ###############")
         println(ASTPrinter().visit(it))
-        println("############### AST ###############")
+        println("############### AST ###############\n")
+
+        println("############### FORWARD FLOW ###############")
+        val flow: IFlow = ForwardFlow()
+        flow.constructFlow(it)
+        println("############### FORWARD FLOW ###############\n")
     }
     exitWithCode(ExitCode.OK)
 }
