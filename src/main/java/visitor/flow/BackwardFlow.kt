@@ -12,57 +12,57 @@ import ast.expression.bool.BooleanConstant
 import ast.expression.bool.UnaryBooleanExpression
 import ast.statement.*
 
-class ForwardFlow: DefaultFlow() {
+class BackwardFlow: DefaultFlow() {
 
     // IFlow Methods
     override fun constructFlow(program: Program) {
         this._program = program
-        program.accept(this)
+        this._program.accept(this)
     }
     // IFlow Methods end
 
     // Utility Methods
-    private fun addSuccessor(node: Node, successor: Node) {
-        this._flow.getOrPut(node) { mutableListOf() }.add(successor)
+    private fun addPredecessor(node: Node, predecessors: Node) {
+        this._flow.getOrPut(node) { mutableListOf() }.add(predecessors)
     }
     // Utility Methods end
 
     override fun visit(program: Program): List<Node> {
         // Procedure
-        for (i in 0 until program._procedures.size - 1) {
+        for (i in program._procedures.size - 1 downTo 1) {
             val current = program._procedures[i]
-            val successor = program._procedures[i + 1]
-            addSuccessor(current, successor)
+            val predecessor = program._procedures[i - 1]
+            addPredecessor(current, predecessor)
         }
         program._procedures.forEach { it.accept(this) }
 
-        // First variable is the successor of the last procedure definition
+        // Last procedure definition is the predecessor of the first variable
         if (program._procedures.isNotEmpty() && program._variables.isNotEmpty())
-            addSuccessor(
-                program._procedures.last(),
-                program._variables.first()
+            addPredecessor(
+                program._variables.first(),
+                program._procedures.last()
             )
 
         // Variable
-        for (i in 0 until program._variables.size - 1) {
+        for (i in program._variables.size - 1 downTo 1) {
             val current = program._variables[i]
-            val successor = program._variables[i + 1]
-            addSuccessor(current, successor)
+            val predecessor = program._variables[i - 1]
+            addPredecessor(current, predecessor)
         }
         program._variables.forEach { it.accept(this) }
 
-        // First statement is the successor of the last variable
+        // Last variable definition is the predecessor of the first statement
         if (program._statements.isNotEmpty() && program._variables.isNotEmpty())
-            addSuccessor(
-                program._variables.last(),
-                program._statements.first()
+            addPredecessor(
+                program._statements.first(),
+                program._variables.last()
             )
 
         // Statements
-        for (i in 0 until program._statements.size - 1) {
+        for (i in program._statements.size - 1 downTo 1) {
             val current = program._statements[i]
-            val successor = program._statements[i + 1]
-            addSuccessor(current, successor)
+            val predecessor = program._statements[i - 1]
+            addPredecessor(current, predecessor)
         }
         program._statements.forEach { it.accept(this) }
 
@@ -70,15 +70,16 @@ class ForwardFlow: DefaultFlow() {
     }
 
     override fun visit(procedure: Procedure): List<Node> {
+        TODO("Not yet fixed")
         if (procedure._statements.isNotEmpty())
-            addSuccessor(
+            addPredecessor(
                 procedure,
                 procedure._statements.first()
             )
         for (i in 0 until procedure._statements.size - 1) {
             val current = procedure._statements[i]
             val successor = procedure._statements[i + 1]
-            addSuccessor(current, successor)
+            addPredecessor(current, successor)
         }
         procedure._statements.forEach { it.accept(this) }
 
@@ -90,15 +91,16 @@ class ForwardFlow: DefaultFlow() {
     override fun visit(position: Position) = emptyList<Node>()
 
     override fun visit(block: Block): List<Node> {
+        TODO("Not yet fixed")
         if (block._statements.isNotEmpty())
-            addSuccessor(
+            addPredecessor(
                 block,
                 block._statements.first()
             )
         for (i in 0 until block._statements.size - 1) {
             val current = block._statements[i]
             val successor = block._statements[i + 1]
-            addSuccessor(current, successor)
+            addPredecessor(current, successor)
         }
         block._statements.forEach { it.accept(this) }
 
@@ -108,15 +110,16 @@ class ForwardFlow: DefaultFlow() {
     override fun visit(variable: Variable) = emptyList<Node>()
 
     override fun visit(variableBlock: VariableBlock): List<Node> {
+        TODO("Not yet fixed")
         if (variableBlock._variables.isNotEmpty())
-            addSuccessor(
+            addPredecessor(
                 variableBlock,
                 variableBlock._variables.first()
             )
         for (i in 0 until variableBlock._variables.size - 1) {
             val current = variableBlock._variables[i]
             val successor = variableBlock._variables[i + 1]
-            addSuccessor(current, successor)
+            addPredecessor(current, successor)
         }
         variableBlock._variables.forEach { it.accept(this) }
 
@@ -140,8 +143,9 @@ class ForwardFlow: DefaultFlow() {
     override fun visit(assignStatement: AssignStatement) = emptyList<Node>()
 
     override fun visit(callStatement: CallStatement): List<Node> {
+        TODO("Not yet fixed")
         this._program._procedures.find { it._name == callStatement._procedureName }?.let {
-            addSuccessor(
+            addPredecessor(
                 callStatement,
                 it
             )
@@ -151,14 +155,15 @@ class ForwardFlow: DefaultFlow() {
     }
 
     override fun visit(ifStatement: IfStatement): List<Node> {
-        addSuccessor(
+        TODO("Not yet fixed")
+        addPredecessor(
             ifStatement._condition,
             ifStatement._thenBody
         )
         ifStatement._thenBody.accept(this)
 
         ifStatement._elseBody?.let {
-            addSuccessor(
+            addPredecessor(
                 ifStatement._condition,
                 ifStatement._elseBody
             )
@@ -171,12 +176,13 @@ class ForwardFlow: DefaultFlow() {
     override fun visit(skipStatement: SkipStatement) = emptyList<Node>()
 
     override fun visit(whileStatement: WhileStatement): List<Node> {
-        addSuccessor(
+        TODO("Not yet fixed")
+        addPredecessor(
             whileStatement._condition,
             whileStatement._body
         )
         whileStatement._body.accept(this)
-        addSuccessor(
+        addPredecessor(
             whileStatement._body._statements.first(),
             whileStatement._condition
         )
