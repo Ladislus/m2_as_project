@@ -20,16 +20,13 @@ fun main(args: Array<String>) {
         println(ASTPrinter().visit(it))
         println("############### AST ###############\n")
 
-        println("############### FORWARD FLOW ###############")
+        println("############### FLOW ###############")
         val flow: IFlow = Flow(it)
-        try {
-            val filePath = "./flow.dot"
-            val file = File(filePath)
-            file.writeText(flow.toDot())
-        } catch (e: Exception) {
-            println("Error: ${e.message}")
-        }
-        println("############### FORWARD FLOW ###############\n")
+        File("./flow.dot").writeText(flow.toDot())
+        val cmd = "dot -Tpng ./flow.dot -o ./flow.png"
+        println("[CMD] $cmd")
+        Runtime.getRuntime().exec(cmd)
+        println("############### FLOW ###############\n")
     }
     exitWithCode(ExitCode.OK)
 }

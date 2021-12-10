@@ -17,7 +17,23 @@ class Flow(
     }
 
     override fun visit(program: Program): Pair<State, List<State>> {
-        // TODO Link Procedure
+        // Visit all procedures
+        for (i in 0 until program._procedures.size - 1) {
+            val currentProcedureIE = program._procedures[i].accept(this)
+            val nextProcedureIE = program._procedures[i + 1].accept(this)
+
+            currentProcedureIE.second.forEach { it.addSuccessor(nextProcedureIE.first) }
+        }
+
+        // Link last procedure to first variable, or statement if there is no variable
+        if (program._procedures.isNotEmpty()) {
+            val lastProcedureIE = program._procedures.last().accept(this)
+            if (program._variables.isNotEmpty()) {
+                lastProcedureIE.second.forEach { it.addSuccessor(program._variables.first().accept(this).first) }
+            } else if (program._statements.isNotEmpty()) {
+                lastProcedureIE.second.forEach { it.addSuccessor(program._statements.first().accept(this).first) }
+            }
+        }
 
         // Visit all variables
         for (i in 0 until program._variables.size - 1) {
@@ -47,7 +63,17 @@ class Flow(
     }
 
     override fun visit(procedure: Procedure): Pair<State, List<State>> {
-        TODO("Not yet implemented")
+        val state = createOrGetExistingState(procedure, "Procedure ${procedure._name}")
+        state.addSuccessor(procedure._statements.first().accept(this).first)
+
+        for (i in 0 until procedure._statements.size - 1) {
+            val currentStatementIE = procedure._statements[i].accept(this)
+            val nextStatementIE = procedure._statements[i + 1].accept(this)
+
+            currentStatementIE.second.forEach { it.addSuccessor(nextStatementIE.first) }
+        }
+
+        return Pair(state, listOf(state))
     }
 
     override fun visit(block: Block): Pair<State, List<State>> {
