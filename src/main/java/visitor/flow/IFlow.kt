@@ -8,5 +8,5 @@ interface IFlow {
     fun pileSuccessors(currentState: State)
     fun toDot(): String
     fun reverse()
-    fun createOrGetExistingState(node: Node): State
+    fun createOrGetExistingState(node: Node, identifier: String? = null): State
 }

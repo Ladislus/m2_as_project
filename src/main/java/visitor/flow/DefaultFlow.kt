@@ -10,7 +10,7 @@ import visitor.raiseIllegalStateExceptionWithClass
 
 abstract class DefaultFlow(
     protected val _program: Program,
-): IFlow, DefaultVisitor<EntryExits?>() {
+): IFlow, DefaultVisitor<Pair<State, List<State>>>() {
 
     private var _counter: Int = 0
         get() = ++field
@@ -39,15 +39,15 @@ abstract class DefaultFlow(
         }
     }
 
-    private fun createState(node: Node): State {
-        val state = State(node.javaClass.toString(), this._counter)
+    private fun createState(node: Node, identifier: String?): State {
+        val state = State(identifier ?: node.javaClass.toString(), this._counter, node)
         this._states.add(state)
         if (this._head == null) this._head = state
         return state
     }
 
-    override fun createOrGetExistingState(node: Node): State =
-        this._nodeToState.getOrPut(node) { createState(node) }
+    override fun createOrGetExistingState(node: Node, identifier: String?): State =
+        this._nodeToState.getOrPut(node) { createState(node, identifier) }
 
     override fun toDot(): String {
         var dot = "digraph G {\n"
@@ -59,11 +59,11 @@ abstract class DefaultFlow(
         return dot
     }
 
-    override fun visit(type: Type): EntryExits? {
+    override fun visit(type: Type): Pair<State, List<State>> {
         raiseIllegalStateExceptionWithClass(type::class.java)
     }
 
-    override fun visit(position: Position): EntryExits? {
+    override fun visit(position: Position): Pair<State, List<State>> {
         raiseIllegalStateExceptionWithClass(position::class.java)
     }
 }
