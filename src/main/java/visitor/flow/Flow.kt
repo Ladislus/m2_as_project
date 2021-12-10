@@ -1,15 +1,9 @@
 package visitor.flow
 
 import ast.*
-import ast.declaration.Variable
-import ast.declaration.VariableBlock
-import ast.expression.arithmetic.ArithmeticConstant
-import ast.expression.arithmetic.BinaryArithmeticExpression
-import ast.expression.arithmetic.IdentifierExpression
-import ast.expression.arithmetic.UnaryArithmeticExpression
-import ast.expression.bool.BinaryBooleanExpression
-import ast.expression.bool.BooleanConstant
-import ast.expression.bool.UnaryBooleanExpression
+import ast.declaration.*
+import ast.expression.arithmetic.*
+import ast.expression.bool.*
 import ast.statement.*
 import visitor.printers.Printer
 
@@ -45,9 +39,9 @@ class Flow(
             currentStatementIE.second.forEach { it.addSuccessor(nextStatementIE.first) }
         }
 
-        // Dull return
+        // Placeholder return
         return Pair(
-            State("", 0, program),
+            State("PROGRAM", -1, program),
             emptyList()
         )
     }
@@ -133,7 +127,7 @@ class Flow(
 
         val entry = conditionIE.first
 
-        // Connect condition exit to blocks entry
+        // Connect condition's exit to the blocks' entry
         conditionIE.second.forEach { it.addSuccessor(thenIE.first) }
         conditionIE.second.forEach {currentConditionExit ->
             elseIE?.first?.let { currentConditionExit.addSuccessor(it) }
