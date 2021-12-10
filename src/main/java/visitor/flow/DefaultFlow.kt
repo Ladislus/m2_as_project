@@ -10,7 +10,7 @@ import visitor.raiseIllegalStateExceptionWithClass
 
 abstract class DefaultFlow(
     protected val _program: Program,
-): IFlow, DefaultVisitor<Pair<State, List<State>>>() {
+    ): IFlow, DefaultVisitor<Pair<State, List<State>>>() {
 
     private var _counter: Int = 0
         get() = ++field
@@ -43,7 +43,10 @@ abstract class DefaultFlow(
     private fun createState(node: Node, identifier: String?): State {
         val state = State(identifier ?: node.javaClass.toString(), this._counter, node)
         this._states.add(state)
-        if (this._head == null) this._head = state
+        if (this._head == null) {
+            this._head = state
+            this._stack.addFirst(state)
+        }
         return state
     }
 

@@ -1,6 +1,7 @@
 import utils.ExitCode
 import utils.buildAST
 import utils.exitWithCode
+import visitor.analyse.*
 import visitor.flow.Flow
 import visitor.flow.IFlow
 import visitor.printers.ASTPrinter
@@ -23,9 +24,13 @@ fun main(args: Array<String>) {
         println("############### FLOW ###############")
         val flow: IFlow = Flow(it).reverse()
         File("./flow.dot").writeText(flow.toDot())
-        val cmd = "dot -Tpng ./flow.dot -o ./flow.png"
-        println("[CMD] $cmd")
-        Runtime.getRuntime().exec(cmd)
+//        val cmd = "dot -Tpng ./flow.dot -o ./flow.png"
+//        println("[CMD] $cmd")
+//        Runtime.getRuntime().exec(cmd)
+        val availableExpressionsAnalyse: IAnalyse = AvailableExpressionsAnalyse(flow)
+//        val liveVariableAnalyse: IAnalyse = LiveVariableAnalyse(flow)
+//        val reachingDefinitionAnalyse: IAnalyse = ReachingDefinitionAnalyse(flow)
+//        val veryBusyExpressionAnalyse: IAnalyse = VeryBusyExpressionAnalyse(flow)
         println("############### FLOW ###############\n")
     }
     exitWithCode(ExitCode.OK)

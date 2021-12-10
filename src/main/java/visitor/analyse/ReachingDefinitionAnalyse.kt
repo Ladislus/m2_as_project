@@ -1,17 +1,12 @@
 package visitor.analyse
 
 import ast.Program
-import ast.expression.arithmetic.ArithmeticConstant
-import ast.expression.arithmetic.BinaryArithmeticExpression
-import ast.expression.arithmetic.IdentifierExpression
-import ast.expression.arithmetic.UnaryArithmeticExpression
-import ast.expression.bool.BinaryBooleanExpression
-import ast.expression.bool.BooleanConstant
-import ast.expression.bool.UnaryBooleanExpression
-import ast.statement.AssignStatement
+import visitor.flow.Flow
+import visitor.flow.IFlow
 
 abstract class ReachingDefinitionAnalyse(
-    _program: Program
-) : DefaultVisitorAnalyse(_program) {
+    _flow: IFlow
+    ): DefaultAnalyse(_flow) {
+
     // TODO("not implemented")
 }
