@@ -7,6 +7,6 @@ interface IFlow {
     fun getNext(): State
     fun pileSuccessors(currentState: State)
     fun toDot(): String
-    fun reverse()
+    fun reverse(): IFlow
     fun createOrGetExistingState(node: Node, identifier: String? = null): State
 }

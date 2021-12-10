@@ -21,7 +21,7 @@ fun main(args: Array<String>) {
         println("############### AST ###############\n")
 
         println("############### FLOW ###############")
-        val flow: IFlow = Flow(it)
+        val flow: IFlow = Flow(it).reverse()
         File("./flow.dot").writeText(flow.toDot())
         val cmd = "dot -Tpng ./flow.dot -o ./flow.png"
         println("[CMD] $cmd")

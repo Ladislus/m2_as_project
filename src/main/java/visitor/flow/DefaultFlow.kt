@@ -29,7 +29,7 @@ abstract class DefaultFlow(
         this._stack.addAll(currentState._successors)
     }
 
-    override fun reverse() {
+    override fun reverse(): IFlow {
         this._head?.let {
             this._states.forEach {
                 val tmp = it._successors
@@ -37,6 +37,7 @@ abstract class DefaultFlow(
                 it._predecessors = tmp
             }
         }
+        return this
     }
 
     private fun createState(node: Node, identifier: String?): State {
@@ -52,7 +53,8 @@ abstract class DefaultFlow(
     override fun toDot(): String {
         var dot = "digraph G {\n"
         for (state in this._states.sortedBy { it._index }) {
-            dot += "\tnode${state._index} [label=\"${state._identifier}\"];\n"
+
+            dot += "\tnode${state._index} [label=\"${state._identifier}\"] ${if (state == this._head) "[color=\"red\"]" else ""};\n"
             dot += "\tnode${state._index} -> {${state._successors.joinToString(" ") { "node" + it._index }}};\n"
         }
         dot += "}"
