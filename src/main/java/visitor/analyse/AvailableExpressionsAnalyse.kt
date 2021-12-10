@@ -1,6 +1,8 @@
 package visitor.analyse
 
 import ast.Program
+import ast.declaration.Variable
+import ast.declaration.VariableBlock
 import ast.expression.arithmetic.ArithmeticConstant
 import ast.expression.arithmetic.BinaryArithmeticExpression
 import ast.expression.arithmetic.IdentifierExpression
@@ -15,23 +17,17 @@ class AvailableExpressionsAnalyse(
     _program: Program
 ) : DefaultVisitorAnalyse(_program) {
 
-    private val availableExpressions : Set<Expression>  = mutableSetOf()
-
     override fun visit(unaryArithmeticExpression: UnaryArithmeticExpression) {
-        this.availableExpressions.plus(unaryArithmeticExpression)
+        unaryArithmeticExpression.accept(this)
+        this._memory.plus(unaryArithmeticExpression)
     }
 
     override fun visit(binaryArithmeticExpression: BinaryArithmeticExpression) {
-        this.availableExpressions.plus(binaryArithmeticExpression)
+        binaryArithmeticExpression._leftExpression.accept(this)
+        binaryArithmeticExpression._rightExpression.accept(this)
+        this._memory.plus(binaryArithmeticExpression)
     }
 
-    override fun visit(arithmeticConstant: ArithmeticConstant) {
-        this.availableExpressions.plus(arithmeticConstant)
-    }
-
-    override fun visit(arithmeticIdentifierExpression: IdentifierExpression) {
-        this.availableExpressions.plus(arithmeticIdentifierExpression)
-    }
 
     override fun visit(unaryBooleanExpression: UnaryBooleanExpression) {
         this.availableExpressions.plus(unaryBooleanExpression)
@@ -43,6 +39,18 @@ class AvailableExpressionsAnalyse(
 
     override fun visit(booleanConstant: BooleanConstant) {
         this.availableExpressions.plus(booleanConstant)
+    }
+
+    override fun visit(program: Program) {
+        TODO("Not yet implemented")
+    }
+
+    override fun visit(variable: Variable) {
+        TODO("Not yet implemented")
+    }
+
+    override fun visit(variableBlock: VariableBlock) {
+        TODO("Not yet implemented")
     }
 
     override fun visit(assignStatement: AssignStatement) {
