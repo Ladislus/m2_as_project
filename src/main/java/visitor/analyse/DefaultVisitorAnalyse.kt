@@ -12,82 +12,39 @@ import ast.expression.bool.BooleanConstant
 import ast.expression.bool.UnaryBooleanExpression
 import ast.statement.*
 import visitor.DefaultVisitor
+import visitor.flow.ForwardFlow
+import visitor.flow.IFlow
 
-abstract class DefaultVisitorAnalyse: DefaultVisitor<Node>() {
+abstract class DefaultVisitorAnalyse(
+    private val _program: Program,
+    private val _flow: IFlow = ForwardFlow()
+    ): DefaultVisitor<Unit>() {
 
-    override fun visit(program: Program): Node {
-        TODO("Not yet implemented")
+    init {
+        this._flow.constructFlow(this._program)
     }
 
-    override fun visit(procedure: Procedure): Node {
-        TODO("Not yet implemented")
+    override fun visit(program: Program) {
+        while (this._flow.hasNext()) this._flow.getNext().accept(this)
     }
 
-    override fun visit(type: Type): Node {
-        TODO("Not yet implemented")
-    }
+    override fun visit(procedure: Procedure)  {}
 
-    override fun visit(position: Position): Node {
-        TODO("Not yet implemented")
-    }
+    override fun visit(type: Type) {}
 
-    override fun visit(block: Block): Node {
-        TODO("Not yet implemented")
-    }
+    override fun visit(position: Position) {}
 
-    override fun visit(variable: Variable): Node {
-        TODO("Not yet implemented")
-    }
+    override fun visit(block: Block) {}
 
-    override fun visit(variableBlock: VariableBlock): Node {
-        TODO("Not yet implemented")
-    }
+    override fun visit(variable: Variable) {}
 
-    override fun visit(unaryArithmeticExpression: UnaryArithmeticExpression): Node {
-        TODO("Not yet implemented")
-    }
+    override fun visit(variableBlock: VariableBlock) {}
 
-    override fun visit(binaryArithmeticExpression: BinaryArithmeticExpression): Node {
-        TODO("Not yet implemented")
-    }
+    override fun visit(callStatement: CallStatement) {}
 
-    override fun visit(arithmeticConstant: ArithmeticConstant): Node {
-        TODO("Not yet implemented")
-    }
+    override fun visit(ifStatement: IfStatement) {}
 
-    override fun visit(arithmeticIdentifierExpression: IdentifierExpression): Node {
-        TODO("Not yet implemented")
-    }
+    override fun visit(skipStatement: SkipStatement) {}
 
-    override fun visit(unaryBooleanExpression: UnaryBooleanExpression): Node {
-        TODO("Not yet implemented")
-    }
-
-    override fun visit(binaryBooleanExpression: BinaryBooleanExpression): Node {
-        TODO("Not yet implemented")
-    }
-
-    override fun visit(booleanConstant: BooleanConstant): Node {
-        TODO("Not yet implemented")
-    }
-
-    override fun visit(assignStatement: AssignStatement): Node {
-        TODO("Not yet implemented")
-    }
-
-    override fun visit(callStatement: CallStatement): Node {
-        TODO("Not yet implemented")
-    }
-
-    override fun visit(ifStatement: IfStatement): Node {
-        TODO("Not yet implemented")
-    }
-
-    override fun visit(skipStatement: SkipStatement): Node {
-        TODO("Not yet implemented")
-    }
-
-    override fun visit(whileStatement: WhileStatement): Node {
-        TODO("Not yet implemented")
-    }
+    override fun visit(whileStatement: WhileStatement) {}
 }

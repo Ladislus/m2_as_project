@@ -1,10 +1,11 @@
 import utils.ExitCode
 import utils.buildAST
 import utils.exitWithCode
-import visitor.flow.ForwardFlow
+import visitor.flow.Flow
 import visitor.flow.IFlow
 import visitor.printers.ASTPrinter
 import visitor.printers.Printer
+import java.io.File
 
 fun main(args: Array<String>) {
     if (args.isEmpty()) exitWithCode(ExitCode.NO_INPUT_FILE)
@@ -19,10 +20,13 @@ fun main(args: Array<String>) {
         println(ASTPrinter().visit(it))
         println("############### AST ###############\n")
 
-        println("############### FORWARD FLOW ###############")
-        val flow: IFlow = ForwardFlow()
-        flow.constructFlow(it)
-        println("############### FORWARD FLOW ###############\n")
+        println("############### FLOW ###############")
+        val flow: IFlow = Flow(it).reverse()
+        File("./flow.dot").writeText(flow.toDot())
+        val cmd = "dot -Tpng ./flow.dot -o ./flow.png"
+        println("[CMD] $cmd")
+        Runtime.getRuntime().exec(cmd)
+        println("############### FLOW ###############\n")
     }
     exitWithCode(ExitCode.OK)
 }

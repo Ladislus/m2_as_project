@@ -1,10 +1,12 @@
 package visitor.flow
 
 import ast.Node
-import ast.Program
 
 interface IFlow {
-    fun constructFlow(program: Program)
     fun hasNext(): Boolean
-    fun getNext(): Node
+    fun getNext(): State
+    fun pileSuccessors(currentState: State)
+    fun toDot(): String
+    fun reverse(): IFlow
+    fun createOrGetExistingState(node: Node, identifier: String? = null): State
 }
