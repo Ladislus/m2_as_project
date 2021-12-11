@@ -5,6 +5,7 @@ import ast.Position
 import ast.Program
 import ast.Type
 import visitor.DefaultVisitor
+import visitor.printers.Printer
 import visitor.raiseIllegalStateExceptionWithClass
 
 
@@ -26,7 +27,17 @@ abstract class DefaultFlow(
         this._stack.removeLast()
 
     override fun pileSuccessors(currentState: State) {
-        this._stack.addAll(currentState._successors)
+        // TODO("Remove print")
+//        this._stack.addAll(currentState._successors)
+        println("PileSucessors of (${currentState._node.accept(Printer())})")
+        for (successor in currentState._successors) {
+            println("\t\t\tPiling (${successor._node.accept(Printer())})")
+            this._stack.addLast(successor)
+        }
+    }
+
+    override fun addToStack(state: State) {
+        this._stack.add(state)
     }
 
     override fun reverse(): IFlow {
@@ -37,6 +48,7 @@ abstract class DefaultFlow(
                 it._predecessors = tmp
             }
         }
+        TODO("Change _head")
         return this
     }
 

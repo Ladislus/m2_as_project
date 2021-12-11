@@ -1,0 +1,9 @@
+program p2
+begin
+    int a, b, c, x, y, z, k, p, i, q;
+    a := b + c;
+    x := y + z;
+    if k < 0 then b := b + 1 else i := y + z;
+    p := b + c;
+    q := z + y
+end
