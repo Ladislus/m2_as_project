@@ -13,10 +13,6 @@ abstract class DefaultAnalyse(
     protected val _flow: IFlow
     ): IAnalyse, DefaultVisitor<Boolean?>() {
 
-    protected val _memory: MutableSet<Expression> = mutableSetOf()
-
-    override fun visit(procedure: Procedure): Boolean? { return null }
-
     override fun visit(type: Type): Boolean? { return null }
 
     override fun visit(position: Position): Boolean? { return null }

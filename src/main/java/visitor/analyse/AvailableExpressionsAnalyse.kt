@@ -1,22 +1,27 @@
 package visitor.analyse
 
 import ast.Block
+import ast.Procedure
 import ast.Program
 import ast.declaration.Variable
 import ast.declaration.VariableBlock
+import ast.expression.Expression
 import ast.expression.arithmetic.BinaryArithmeticExpression
 import ast.expression.arithmetic.IdentifierExpression
 import ast.expression.arithmetic.UnaryArithmeticExpression
 import ast.expression.bool.BinaryBooleanExpression
 import ast.expression.bool.UnaryBooleanExpression
 import ast.statement.AssignStatement
-import visitor.flow.Flow
 import visitor.flow.IFlow
+import visitor.flow.State
 
 class AvailableExpressionsAnalyse(
     _flow: IFlow
     ): DefaultAnalyse(_flow) {
 
+
+//    private val _memory: MutableMap<State, Pair<MutableSet<Expression>, Boolean>> = mutableMapOf()
+    private val _memory: MutableSet<Expression> = mutableSetOf()
     private var _hasChanged: Boolean = false
 
     override fun analyse() {
@@ -38,17 +43,23 @@ class AvailableExpressionsAnalyse(
         return false
     }
 
+    override fun visit(procedure: Procedure): Boolean? {
+        procedure._variables.forEach { it.accept(this) }
+        procedure._return?.accept(this)
+        procedure._statements.forEach { it.accept(this) }
+        return null
+    }
+
+
     override fun visit(binaryArithmeticExpression: BinaryArithmeticExpression): Boolean {
-        var status = false
-        if (binaryArithmeticExpression._leftExpression.accept(this) == true) {
-            status = true
+        if (
+            (binaryArithmeticExpression._leftExpression.accept(this) == true)
+            || (binaryArithmeticExpression._rightExpression.accept(this) == true)
+        ) {
             this._hasChanged = this._memory.add(binaryArithmeticExpression)
+            return true
         }
-        if (binaryArithmeticExpression._rightExpression.accept(this) == true) {
-            status = true
-            this._hasChanged = this._memory.add(binaryArithmeticExpression)
-        }
-        return status
+        return false
     }
 
     override fun visit(arithmeticIdentifierExpression: IdentifierExpression): Boolean {
@@ -65,20 +76,19 @@ class AvailableExpressionsAnalyse(
     }
 
     override fun visit(binaryBooleanExpression: BinaryBooleanExpression): Boolean {
-        var status = false
-        if (binaryBooleanExpression._leftExpression.accept(this) == true) {
-            status = true
+        if (
+            (binaryBooleanExpression._leftExpression.accept(this) == true)
+            || (binaryBooleanExpression._rightExpression.accept(this) == true)
+        ){
             this._hasChanged = this._memory.add(binaryBooleanExpression)
+            return true
         }
-        if (binaryBooleanExpression._rightExpression.accept(this) == true) {
-            status = true
-            this._hasChanged = this._memory.add(binaryBooleanExpression)
-        }
-        return status
+        return false
     }
 
     override fun visit(program: Program): Boolean? {
         // Visit all variables (they can contain expressions) & statements
+        program._procedures.forEach { it.accept(this) }
         program._variables.forEach { it.accept(this) }
         program._statements.forEach { it.accept(this) }
         return null
