@@ -29,7 +29,7 @@ class AvailableExpressionsAnalyse(
     private lateinit var _currentMemory: MutableSet<Expression>
     private var _hasChanged: Boolean = false
 
-    private fun getPredecessorsMemory(predecessors: Set<State>): Set<Expression> {
+    private fun getPredecessorsMemory(predecessors: Set<State>): MutableSet<Expression> {
         var allPredeccessorsMem: MutableSet<Expression>? = null
         for (predecessor in predecessors) {
             println("\t\t\t\tPredecessor (${predecessor._node.accept(this._printer)}): [${this._memory[predecessor]?.first?.joinToString(", ") { it.accept(this._printer) } ?: ""}]")
@@ -48,59 +48,31 @@ class AvailableExpressionsAnalyse(
         while (this._flow.hasNext()) {
             // Get current state
             this._currentState = this._flow.getNext()
-            // Try to retrieve state's memory, or allocate empty if it was never visited
-//            this._currentMemory = this._memory[this._currentState]?.first ?: mutableSetOf()
-            this._currentMemory = this._memory[this._currentState]?.let { this.getPredecessorsMemory(this._currentState._predecessors) as MutableSet<Expression> } ?: mutableSetOf()
-
-            // TODO("Remove later)
-            println("==============================================================================================")
-            println("Current state: ${this._currentState}")
-            println("Current node: ${this._currentState._node}")
-            println("Current node printed: ${this._currentState._node.accept(this._printer)}")
-            println("Current mem: [${this._currentMemory.joinToString(separator = ", ") { it.accept(this._printer) }}]")
-
-            val predecessorsMemory = this.getPredecessorsMemory(this._currentState._predecessors)
-            println("\tPredecessors mem: [${predecessorsMemory.joinToString(separator = ", ") { it.accept(this._printer) }}]")
-            this._currentMemory += (predecessorsMemory) as MutableSet<Expression>
-            println("\tCurrent mem plus predecessors: [${this._currentMemory.joinToString(separator = ", ") { it.accept(this._printer) }}]")
-
-
+            // Retrieve predecessors
+            this._currentMemory = mutableSetOf()
+            this._currentMemory += this.getPredecessorsMemory(this._currentState._predecessors)
             // Launch analysis of the node
             this._currentState._node.accept(this)
 
-            // If the analysis changed something
-            if (!this._memory.containsKey(this._currentState) || this._hasChanged) {
-                println("\tMemory changed")
-                // Test if the new memory is greater than the previous one
-                val previousMemory = this._memory[this._currentState]
-                println("\tPrevious mem: [${previousMemory?.first?.joinToString(separator = ", ") { it.accept(this._printer) } ?: ""}]")
-                if (
-                    // If it's the first time we analyse this state
-                    previousMemory == null
-                    || (
-                            // Or if the memory is greater than the previous one
-                            this._currentMemory.containsAll(previousMemory.first)
-                            && this._currentMemory.size > previousMemory.first.size
-                    )
+            if (!this._memory.containsKey(this._currentState)) {
+                this._memory[this._currentState] = Pair(this._currentMemory, true)
+                this._flow.pileSuccessors(this._currentState)
+            }
+            else {
+                val previousMem = this._memory[this._currentState]!!.first
+                val newMem = this._currentMemory.intersect(previousMem)
+                if ((newMem.size != previousMem.size) ||
+                    !newMem.containsAll(previousMem) ||
+                    !previousMem.containsAll(newMem)
                 ) {
-                    println("\t\t✓ => Memory is greater than previous one")
-                    // Update the memory
-                    this._memory[this._currentState] = Pair(this._currentMemory, true)
-                    // Pile successors
                     this._flow.pileSuccessors(this._currentState)
-                } else {
-                    // Else set "changed" flag to false
-                    this._memory[this._currentState] = Pair(this._memory[this._currentState]!!.first, false)
-                    println("\t\t✗ => Memory is not greater than previous one")
+                    this._memory[this._currentState] = Pair(newMem as MutableSet<Expression>, true)
                 }
-                println("==============================================================================================")
-                // Reset global variable
-                this._hasChanged = false
             }
         }
 
         // Print the memory
-        println("Available expressions:")
+        println("Available expressions at exits:")
         this._memory.forEach { (k: State, v: Pair<MutableSet<Expression>, Boolean>) ->
             println("\tState${k._index}(${k._node.accept(this._printer)}): ${v.first.joinToString(separator = ", ", prefix = "[ ", postfix = " ]") { it.accept(this._printer) }}")
         }
