@@ -5,12 +5,13 @@ import ast.Position
 import ast.Program
 import ast.Type
 import visitor.DefaultVisitor
+import visitor.printers.Printer
 import visitor.raiseIllegalStateExceptionWithClass
 
 
 abstract class DefaultFlow(
     protected val _program: Program,
-): IFlow, DefaultVisitor<Pair<State, List<State>>>() {
+    ): IFlow, DefaultVisitor<Pair<State, List<State>>>() {
 
     private var _counter: Int = 0
         get() = ++field
@@ -29,6 +30,10 @@ abstract class DefaultFlow(
         this._stack.addAll(currentState._successors)
     }
 
+    override fun addToStack(state: State) {
+        this._stack.add(state)
+    }
+
     override fun reverse(): IFlow {
         this._head?.let {
             this._states.forEach {
@@ -37,13 +42,17 @@ abstract class DefaultFlow(
                 it._predecessors = tmp
             }
         }
+        TODO("Change _head")
         return this
     }
 
     private fun createState(node: Node, identifier: String?): State {
         val state = State(identifier ?: node.javaClass.toString(), this._counter, node)
         this._states.add(state)
-        if (this._head == null) this._head = state
+        if (this._head == null) {
+            this._head = state
+            this._stack.addFirst(state)
+        }
         return state
     }
 
