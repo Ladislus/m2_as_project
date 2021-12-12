@@ -1,7 +1,6 @@
-package visitor.analyse
+package visitor.analyse.reachingDefinition
 
-import ast.Program
-import visitor.flow.Flow
+import visitor.analyse.DefaultAnalyse
 import visitor.flow.IFlow
 
 abstract class ReachingDefinitionAnalyse(
