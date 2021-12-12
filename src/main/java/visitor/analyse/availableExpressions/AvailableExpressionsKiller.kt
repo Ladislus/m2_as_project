@@ -59,5 +59,4 @@ class AvailableExpressionsKiller(
     override fun visit(booleanConstant: BooleanConstant): Set<Expression>? {
         return null
     }
-
 }

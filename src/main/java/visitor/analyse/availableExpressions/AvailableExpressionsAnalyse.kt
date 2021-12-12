@@ -1,17 +1,17 @@
 package visitor.analyse.availableExpressions
 
-import ast.Block
-import ast.Procedure
-import ast.Program
+import ast.*
 import ast.declaration.Variable
 import ast.declaration.VariableBlock
 import ast.expression.Expression
+import ast.expression.arithmetic.ArithmeticConstant
 import ast.expression.arithmetic.BinaryArithmeticExpression
 import ast.expression.arithmetic.IdentifierExpression
 import ast.expression.arithmetic.UnaryArithmeticExpression
 import ast.expression.bool.BinaryBooleanExpression
+import ast.expression.bool.BooleanConstant
 import ast.expression.bool.UnaryBooleanExpression
-import ast.statement.AssignStatement
+import ast.statement.*
 import visitor.analyse.DefaultAnalyse
 import visitor.flow.IFlow
 import visitor.flow.State
@@ -19,7 +19,7 @@ import visitor.printers.Printer
 
 class AvailableExpressionsAnalyse(
     _flow: IFlow
-    ): DefaultAnalyse(_flow) {
+    ): DefaultAnalyse<Boolean?>(_flow) {
 
     private val _memory: MutableMap<State, MutableSet<Expression>> = mutableMapOf()
     private val _printer: Printer = Printer()
@@ -102,8 +102,9 @@ class AvailableExpressionsAnalyse(
     }
 
     override fun visit(procedure: Procedure): Boolean? {
-        procedure._variables.forEach { it.accept(this) }
-        procedure._return?.accept(this)
+        // Useless to visit variables declarations in this analysis
+//        procedure._variables.forEach { it.accept(this) }
+//        procedure._return?.accept(this)
         procedure._statements.forEach { it.accept(this) }
         return null
     }
@@ -148,7 +149,8 @@ class AvailableExpressionsAnalyse(
     override fun visit(program: Program): Boolean? {
         // Visit all variables (they can contain expressions) & statements
         program._procedures.forEach { it.accept(this) }
-        program._variables.forEach { it.accept(this) }
+        // Useless to visit variables declarations in this analysis
+//        program._variables.forEach { it.accept(this) }
         program._statements.forEach { it.accept(this) }
         return null
     }
@@ -193,4 +195,23 @@ class AvailableExpressionsAnalyse(
         // Return useless value
         return null
     }
+
+    override fun visit(type: Type): Boolean? { return null }
+
+    override fun visit(position: Position): Boolean? { return null }
+
+    override fun visit(arithmeticConstant: ArithmeticConstant): Boolean { return false }
+
+    override fun visit(booleanConstant: BooleanConstant): Boolean { return false }
+
+    override fun visit(callStatement: CallStatement): Boolean? {
+        callStatement._arguments.forEach { it.accept(this) }
+        return null
+    }
+
+    override fun visit(ifStatement: IfStatement): Boolean? { return null }
+
+    override fun visit(skipStatement: SkipStatement): Boolean? { return null }
+
+    override fun visit(whileStatement: WhileStatement): Boolean? { return null }
 }

@@ -5,7 +5,7 @@ import visitor.flow.IFlow
 
 abstract class ReachingDefinitionAnalyse(
     _flow: IFlow
-    ): DefaultAnalyse(_flow) {
+): DefaultAnalyse<Unit>(_flow) {
 
     // TODO("not implemented")
 }
