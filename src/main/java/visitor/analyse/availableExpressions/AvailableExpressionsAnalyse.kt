@@ -21,67 +21,81 @@ class AvailableExpressionsAnalyse(
     _flow: IFlow
     ): DefaultAnalyse(_flow) {
 
-    private val _memory: MutableMap<State, Pair<MutableSet<Expression>, Boolean>> = mutableMapOf()
+    private val _memory: MutableMap<State, MutableSet<Expression>> = mutableMapOf()
     private val _printer: Printer = Printer()
 
     // TODO("C'est moche mais ça fonctionne)
     private lateinit var _currentState: State
     private lateinit var _currentMemory: MutableSet<Expression>
-    private var _hasChanged: Boolean = false
 
     private fun getPredecessorsMemory(predecessors: Set<State>): MutableSet<Expression> {
-        var allPredeccessorsMem: MutableSet<Expression>? = null
+        // Can't initialise candidate because an empty intersected with anything is the empty set
+        // (null represent bottom)
+        var candidate: MutableSet<Expression>? = null
         for (predecessor in predecessors) {
-            println("\t\t\t\tPredecessor (${predecessor._node.accept(this._printer)}): [${this._memory[predecessor]?.first?.joinToString(", ") { it.accept(this._printer) } ?: ""}]")
-            allPredeccessorsMem =
-                if (allPredeccessorsMem == null) {
-                    this._memory[predecessor]?.first
+            candidate =
+                // If the candidate is Bottom...
+                if (candidate == null) {
+                    // ... we try to set it to the predecessor's memory (which can also be bottom)
+                    this._memory[predecessor]
+                // If it's not bottom ...
                 } else {
-                    (this._memory[predecessor]?.first?.intersect(allPredeccessorsMem) as MutableSet?) ?: allPredeccessorsMem
+                    // ... we try to intersect the two (if it's bottom, we keep the previous value of candidate)
+                    (this._memory[predecessor]?.intersect(candidate)?.toMutableSet()) ?: candidate
                 }
         }
-        return allPredeccessorsMem ?: mutableSetOf()
+        // Return the intersection of all predecessors (or an empty set if they all are bottom)
+        return candidate ?: mutableSetOf()
     }
 
     override fun analyse() {
-
+        // While we have state in the process stack
         while (this._flow.hasNext()) {
             // Get current state
             this._currentState = this._flow.getNext()
-            // Retrieve predecessors
+            // Reset the value of the attribut (prevent everybody from having the same memory)
             this._currentMemory = mutableSetOf()
+            // Retrieve predecessors' memory
             this._currentMemory += this.getPredecessorsMemory(this._currentState._predecessors)
             // Launch analysis of the node
             this._currentState._node.accept(this)
 
+            // If the previous memory is bottom (first time we analyse this state) ...
             if (!this._memory.containsKey(this._currentState)) {
-                this._memory[this._currentState] = Pair(this._currentMemory, true)
+                // Update the state's memory
+                this._memory[this._currentState] = this._currentMemory
+                // Add all of it's sucessors to the process stack
                 this._flow.pileSuccessors(this._currentState)
             }
+            // Else
             else {
-                val previousMem = this._memory[this._currentState]!!.first
+                // Compare the previous memory with the new one
+                val previousMem = this._memory[this._currentState]!!
                 val newMem = this._currentMemory.intersect(previousMem)
+                // If they are different (the two contains are equivalents, but we're never too sure)
                 if ((newMem.size != previousMem.size) ||
                     !newMem.containsAll(previousMem) ||
                     !previousMem.containsAll(newMem)
                 ) {
+                    // Add all of it's sucessors to the process stack
                     this._flow.pileSuccessors(this._currentState)
-                    this._memory[this._currentState] = Pair(newMem as MutableSet<Expression>, true)
+                    // Update its memory
+                    this._memory[this._currentState] = newMem.toMutableSet()
                 }
             }
         }
 
         // Print the memory
         println("Available expressions at exits:")
-        this._memory.forEach { (k: State, v: Pair<MutableSet<Expression>, Boolean>) ->
-            println("\tState${k._index}(${k._node.accept(this._printer)}): ${v.first.joinToString(separator = ", ", prefix = "[ ", postfix = " ]") { it.accept(this._printer) }}")
+        this._memory.forEach { (k: State, v: MutableSet<Expression>) ->
+            println("\tState ${k._index} (\"${k._node.accept(this._printer)}\"): ${v.joinToString(separator = ", ", prefix = "[ ", postfix = " ]") { it.accept(this._printer) }}")
         }
     }
 
     override fun visit(unaryArithmeticExpression: UnaryArithmeticExpression): Boolean {
         if (unaryArithmeticExpression._expression.accept(this) == true) {
             if (this._currentState._node != unaryArithmeticExpression)
-                this._hasChanged = this._currentMemory.add(unaryArithmeticExpression)
+                this._currentMemory.add(unaryArithmeticExpression)
             return true
         }
         return false
@@ -100,7 +114,7 @@ class AvailableExpressionsAnalyse(
         val rightEval = binaryArithmeticExpression._rightExpression.accept(this)
         if ((leftEval == true) || (rightEval == true)) {
             if (this._currentState._node != binaryArithmeticExpression)
-                this._hasChanged = this._currentMemory.add(binaryArithmeticExpression)
+                this._currentMemory.add(binaryArithmeticExpression)
             return true
         }
         return false
@@ -114,7 +128,7 @@ class AvailableExpressionsAnalyse(
     override fun visit(unaryBooleanExpression: UnaryBooleanExpression): Boolean {
         if (unaryBooleanExpression._expression.accept(this) == true) {
             if (this._currentState._node != unaryBooleanExpression)
-                this._hasChanged = this._currentMemory.add(unaryBooleanExpression)
+                this._currentMemory.add(unaryBooleanExpression)
             return true
         }
         return false
@@ -125,7 +139,7 @@ class AvailableExpressionsAnalyse(
         val rightEval = binaryBooleanExpression._rightExpression.accept(this)
         if ((leftEval == true) || (rightEval == true)) {
             if (this._currentState._node != binaryBooleanExpression)
-                this._hasChanged = this._currentMemory.add(binaryBooleanExpression)
+                this._currentMemory.add(binaryBooleanExpression)
             return true
         }
         return false
@@ -162,20 +176,21 @@ class AvailableExpressionsAnalyse(
         assignStatement._value.accept(this)
 
         // KILL
-        println("-------------------------------------------------------------------------------------------------------")
-        println("\tBefore destroy: [${this._currentMemory.joinToString(separator = ", ") { it.accept(this._printer) }}]")
         val toDestroy = mutableSetOf<Expression>()
-        for (expression in this._currentMemory)
-            expression.accept(AvailableExpressionsKiller(assignStatement._variableName))?.let {
-                toDestroy += it
+        // Retrieve all expressions to kill
+        this._currentMemory.forEach { expression ->
+            expression.accept(AvailableExpressionsKiller(assignStatement._variableName))?.forEach { foundExpression ->
+                toDestroy += foundExpression
             }
-        println("\tTo destroy (identifier: ${assignStatement._variableName}): [${toDestroy.joinToString(separator = ", ") { it.accept(this._printer) }}]")
+        }
+        // Remove expression to kill from the memory
+        // Can't do it in one go as we would remove elements from
+        // the memory we are iterating over
         for (expression in toDestroy) {
             this._currentMemory.remove(expression)
         }
-        println("\tAfter destoy: [${this._currentMemory.joinToString(separator = ", ") { it.accept(this._printer) }}]")
-        println("-------------------------------------------------------------------------------------------------------")
 
+        // Return useless value
         return null
     }
 }

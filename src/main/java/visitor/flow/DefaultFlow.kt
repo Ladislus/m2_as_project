@@ -27,13 +27,7 @@ abstract class DefaultFlow(
         this._stack.removeLast()
 
     override fun pileSuccessors(currentState: State) {
-        // TODO("Remove print")
-//        this._stack.addAll(currentState._successors)
-        println("PileSucessors of (${currentState._node.accept(Printer())})")
-        for (successor in currentState._successors) {
-            println("\t\t\tPiling (${successor._node.accept(Printer())})")
-            this._stack.addLast(successor)
-        }
+        this._stack.addAll(currentState._successors)
     }
 
     override fun addToStack(state: State) {

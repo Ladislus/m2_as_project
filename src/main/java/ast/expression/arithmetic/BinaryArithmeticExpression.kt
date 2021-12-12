@@ -2,6 +2,7 @@ package ast.expression.arithmetic
 
 import ast.Position
 import visitor.IVisitor
+import visitor.printers.Printer
 
 class BinaryArithmeticExpression(
         position: Position,
@@ -20,5 +21,5 @@ class BinaryArithmeticExpression(
                 )
 
         override fun hashCode(): Int =
-                (31 * (31 * this._leftExpression.hashCode()) + this._operator.hashCode()) + this._rightExpression.hashCode()
+                (31 * this._leftExpression.hashCode()) + this._operator.hashCode() + (31 * this._rightExpression.hashCode())
 }

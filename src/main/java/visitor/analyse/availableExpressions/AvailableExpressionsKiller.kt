@@ -33,9 +33,10 @@ class AvailableExpressionsKiller(
     }
 
     override fun visit(arithmeticIdentifierExpression: IdentifierExpression): Set<Expression>? {
+        // If the identifier expression is the identifier we're looking for, return an emptySet instead
+        // of null to propagate the information that the base Expression contains the identifier
         return if (arithmeticIdentifierExpression._identifier == this._identifier) {
-            println("Searched identifier ${this._identifier} == Current identifier ${arithmeticIdentifierExpression._identifier}")
-            setOf()
+            emptySet()
         } else {
             null
         }
