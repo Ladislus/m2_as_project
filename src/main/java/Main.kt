@@ -25,9 +25,9 @@ fun main(args: Array<String>) {
         println("############### FLOW ###############")
         val flow: IFlow = Flow(it)
         File("./flow.dot").writeText(flow.toDot())
-//        val cmd = "dot -Tpng ./flow.dot -o ./flow.png"
-//        println("[CMD] $cmd")
-//        Runtime.getRuntime().exec(cmd)
+        val cmd = "dot -Tpng ./flow.dot -o ./flow.png"
+        println("[CMD] $cmd")
+        Runtime.getRuntime().exec(cmd)
         val availableExpressionsAnalyse: IAnalyse = AvailableExpressionsAnalyse(flow)
         availableExpressionsAnalyse.analyse()
 //        val liveVariableAnalyse: IAnalyse = LiveVariableAnalyse(flow)

@@ -114,8 +114,7 @@ class AvailableExpressionsAnalyse(
         val leftEval = binaryArithmeticExpression._leftExpression.accept(this)
         val rightEval = binaryArithmeticExpression._rightExpression.accept(this)
         if ((leftEval == true) || (rightEval == true)) {
-            if (this._currentState._node != binaryArithmeticExpression)
-                this._currentMemory.add(binaryArithmeticExpression)
+            this._currentMemory.add(binaryArithmeticExpression)
             return true
         }
         return false
@@ -139,8 +138,7 @@ class AvailableExpressionsAnalyse(
         val leftEval = binaryBooleanExpression._leftExpression.accept(this)
         val rightEval = binaryBooleanExpression._rightExpression.accept(this)
         if ((leftEval == true) || (rightEval == true)) {
-            if (this._currentState._node != binaryBooleanExpression)
-                this._currentMemory.add(binaryBooleanExpression)
+            this._currentMemory.add(binaryBooleanExpression)
             return true
         }
         return false
