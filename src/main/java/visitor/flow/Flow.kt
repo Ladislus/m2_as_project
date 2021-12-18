@@ -14,6 +14,7 @@ class Flow(
 
     init {
         this._program.accept(this)
+        this.initStack()
     }
 
     override fun visit(program: Program): Pair<State, List<State>> {
