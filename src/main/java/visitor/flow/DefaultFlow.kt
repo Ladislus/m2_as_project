@@ -16,12 +16,12 @@ abstract class DefaultFlow(
     ): IFlow, DefaultVisitor<Pair<State, List<State>>>() {
 
     private var _counter: Int = 0
-        get() = ++field
-    private var _heads: MutableSet<State> = mutableSetOf()
+        get() = field++
+    protected lateinit var _head: State
     private var _tails: MutableSet<State> = mutableSetOf()
     private val _states: MutableSet<State> = mutableSetOf()
     private val _stack: ArrayDeque<State> = ArrayDeque()
-    private val _nodeToState: MutableMap<Node, State> = mutableMapOf()
+    protected val _nodeToState: MutableMap<Node, State> = mutableMapOf()
 
     override fun hasNext(): Boolean =
         this._stack.isNotEmpty()
@@ -38,17 +38,15 @@ abstract class DefaultFlow(
     }
 
     protected fun initStack() {
-        this._heads.addAll(this._states.filter { it._predecessors.isEmpty() })
-        if (this._heads.isEmpty()) exitWithCode(ExitCode.EMPTY_FLOW)
-
+//        TODO("Better way to find tails")
         this._tails.addAll(this._states.filter { it._successors.isEmpty() })
-        if (this._tails.isEmpty()) exitWithCode(ExitCode.EMPTY_FLOW)
+//        if (this._tails.isEmpty()) exitWithCode(ExitCode.EMPTY_FLOW, "(Tails)")
 
         if (this.reversed) {
             this.reverse()
         }
 
-        this._stack.addAll(this._heads)
+        this._stack.add(this._head)
         if (this._stack.isEmpty()) exitWithCode(ExitCode.EMPTY_FLOW)
     }
 
@@ -59,14 +57,10 @@ abstract class DefaultFlow(
                 it._successors = it._predecessors
                 it._predecessors = tmp
             }
-
-            val tmp = this._heads
-            this._heads = this._tails
-            this._tails = tmp
         }
     }
 
-    private fun createState(node: Node, identifier: String?): State {
+    protected fun createState(node: Node, identifier: String?): State {
         val state = State(identifier ?: node.javaClass.toString(), this._counter, node)
         this._states.add(state)
         return state
@@ -78,7 +72,7 @@ abstract class DefaultFlow(
     override fun toDot(): String {
         var dot = "digraph G {\n"
         for (state in this._states.sortedBy { it._index }) {
-            dot += "\tnode${state._index} [label=\"${state._identifier}\"] ${if (state in this._heads) "[color=\"red\"]" else if (state in this._tails) "[color=\"blue\"]" else ""};\n"
+            dot += "\tnode${state._index} [style=filled] [label=\"${state._identifier}\"] ${if (state == this._head) "[fillcolor=\"crimson\"]" else if (state in this._tails) "[fillcolor=\"skyblue1\"]" else "[fillcolor=\"white\"]"};\n"
             dot += "\tnode${state._index} -> {${state._successors.joinToString(" ") { "node" + it._index }}};\n"
         }
         dot += "}"
