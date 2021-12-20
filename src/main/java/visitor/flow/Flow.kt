@@ -18,14 +18,15 @@ class Flow(
     private val _cache = mutableMapOf<Node, Pair<State, List<State>>>()
 
     init {
-        this._program.accept(this)
+        val ie = this._program.accept(this)
+        this._heads += ie.first
+        this._tails += ie.second
         this.initStack()
     }
 
     override fun visit(program: Program): Pair<State, List<State>> {
 
         val state = createOrGetExistingState(program, "program ${program._identifier ?: ""}")
-        this._head = state
 
         // Visit all procedures
         for (i in 0 until program._procedures.size - 1) {

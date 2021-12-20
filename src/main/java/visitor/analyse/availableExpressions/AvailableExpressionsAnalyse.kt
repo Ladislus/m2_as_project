@@ -1,6 +1,7 @@
 package visitor.analyse.availableExpressions
 
 import ast.*
+import ast.declaration.Declaration
 import ast.declaration.Variable
 import ast.declaration.VariableBlock
 import ast.expression.Expression
@@ -24,7 +25,6 @@ class AvailableExpressionsAnalyse(
     private val _memory: MutableMap<State, MutableSet<Expression>> = mutableMapOf()
     private val _printer: Printer = Printer()
 
-    // TODO("C'est moche mais ça fonctionne)
     private lateinit var _currentState: State
     private lateinit var _currentMemory: MutableSet<Expression>
 
@@ -48,7 +48,6 @@ class AvailableExpressionsAnalyse(
 
                     // Add it to the joint of all the predecessor's KillGen
                     predecessorsKillGen = predecessorsKillGen?.intersect(this._currentMemory) ?: this._currentMemory
-
                 }
             }
             if (predecessorsKillGen == null) predecessorsKillGen = mutableSetOf()
@@ -145,11 +144,6 @@ class AvailableExpressionsAnalyse(
     }
 
     override fun visit(program: Program): Boolean? {
-        // Visit all variables (they can contain expressions) & statements
-        program._procedures.forEach { it.accept(this) }
-        // Useless to visit variables declarations in this analysis
-//        program._variables.forEach { it.accept(this) }
-        program._statements.forEach { it.accept(this) }
         return null
     }
 

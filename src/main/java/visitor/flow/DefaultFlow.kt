@@ -17,8 +17,8 @@ abstract class DefaultFlow(
 
     private var _counter: Int = 0
         get() = field++
-    protected lateinit var _head: State
-    private var _tails: MutableSet<State> = mutableSetOf()
+    protected var _heads: MutableSet<State> = mutableSetOf()
+    protected var _tails: MutableSet<State> = mutableSetOf()
     private val _states: MutableSet<State> = mutableSetOf()
     private val _stack: ArrayDeque<State> = ArrayDeque()
     protected val _nodeToState: MutableMap<Node, State> = mutableMapOf()
@@ -38,15 +38,11 @@ abstract class DefaultFlow(
     }
 
     protected fun initStack() {
-//        TODO("Better way to find tails")
-        this._tails.addAll(this._states.filter { it._successors.isEmpty() })
-//        if (this._tails.isEmpty()) exitWithCode(ExitCode.EMPTY_FLOW, "(Tails)")
-
         if (this.reversed) {
             this.reverse()
         }
 
-        this._stack.add(this._head)
+        this._stack += this._heads
         if (this._stack.isEmpty()) exitWithCode(ExitCode.EMPTY_FLOW)
     }
 
@@ -58,6 +54,9 @@ abstract class DefaultFlow(
                 it._predecessors = tmp
             }
         }
+        val tmp = this._heads
+        this._heads = this._tails
+        this._tails = tmp
     }
 
     protected fun createState(node: Node, identifier: String?): State {
@@ -72,7 +71,7 @@ abstract class DefaultFlow(
     override fun toDot(): String {
         var dot = "digraph G {\n"
         for (state in this._states.sortedBy { it._index }) {
-            dot += "\tnode${state._index} [style=filled] [label=\"${state._identifier}\"] ${if (state == this._head) "[fillcolor=\"crimson\"]" else if (state in this._tails) "[fillcolor=\"skyblue1\"]" else "[fillcolor=\"white\"]"};\n"
+            dot += "\tnode${state._index} [style=filled] [label=\"${state._identifier}\"] ${if (state in this._heads) "[fillcolor=\"crimson\"]" else if (state in this._tails) "[fillcolor=\"skyblue1\"]" else "[fillcolor=\"white\"]"};\n"
             dot += "\tnode${state._index} -> {${state._successors.joinToString(" ") { "node" + it._index }}};\n"
         }
         dot += "}"

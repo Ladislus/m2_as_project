@@ -17,7 +17,6 @@ abstract class DefaultVisitor<T> : IVisitor<T> {
     override fun visit(declaration: Declaration): T =
         raiseIllegalStateExceptionWithClass(declaration::class.java)
 
-
     override fun visit(expression: Expression): T =
         raiseIllegalStateExceptionWithClass(expression::class.java)
 
