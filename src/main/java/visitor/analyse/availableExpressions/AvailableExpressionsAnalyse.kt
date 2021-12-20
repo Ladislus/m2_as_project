@@ -83,8 +83,8 @@ class AvailableExpressionsAnalyse(
         println("Available expressions at entry:")
         this._memory.toSortedMap { o1, o2 -> o1._index.compareTo(o2._index) }.forEach { (k: State, v: MutableSet<Expression>) ->
             when (k._node) {
-                is Program -> println("\tState ${k._index} (Program ${k._node._identifier ?: "?"}): ${v.joinToString(separator = ", ", prefix = "[ ", postfix = " ]") { it.accept(this._printer) }}")
-                is Procedure -> println("\tState ${k._index} (Procedure ${k._node._name}): ${v.joinToString(separator = ", ", prefix = "[ ", postfix = " ]") { it.accept(this._printer) }}")
+                is Program -> {} //println("\tState ${k._index} (Program ${k._node._identifier ?: "?"}): ${v.joinToString(separator = ", ", prefix = "[ ", postfix = " ]") { it.accept(this._printer) }}")
+                is Procedure -> {} //println("\tState ${k._index} (Procedure ${k._node._name}): ${v.joinToString(separator = ", ", prefix = "[ ", postfix = " ]") { it.accept(this._printer) }}")
                 else -> println("\tState ${k._index} (\"${k._node.accept(this._printer)}\"): ${v.joinToString(separator = ", ", prefix = "[ ", postfix = " ]") { it.accept(this._printer) }}")
             }
 
@@ -102,8 +102,6 @@ class AvailableExpressionsAnalyse(
 
     override fun visit(procedure: Procedure): Boolean? {
         // Useless to visit variables declarations in this analysis
-//        procedure._variables.forEach { it.accept(this) }
-//        procedure._return?.accept(this)
         procedure._statements.forEach { it.accept(this) }
         return null
     }
@@ -122,7 +120,6 @@ class AvailableExpressionsAnalyse(
     override fun visit(arithmeticIdentifierExpression: IdentifierExpression): Boolean {
         return true
     }
-
 
     override fun visit(unaryBooleanExpression: UnaryBooleanExpression): Boolean {
         if (unaryBooleanExpression._expression.accept(this) == true) {
