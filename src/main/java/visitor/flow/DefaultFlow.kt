@@ -21,7 +21,10 @@ abstract class DefaultFlow(
     protected var _tails: MutableSet<State> = mutableSetOf()
     private val _states: MutableSet<State> = mutableSetOf()
     private val _stack: ArrayDeque<State> = ArrayDeque()
-    protected val _nodeToState: MutableMap<Node, State> = mutableMapOf()
+    private val _nodeToState: MutableMap<Node, State> = mutableMapOf()
+
+    override fun getProgram(): Program =
+        this._program
 
     override fun hasNext(): Boolean =
         this._stack.isNotEmpty()
@@ -63,6 +66,10 @@ abstract class DefaultFlow(
         val state = State(identifier ?: node.javaClass.toString(), this._counter, node)
         this._states.add(state)
         return state
+    }
+
+    override fun getCorrespondingState(node: Node): State? {
+        return this._nodeToState[node]
     }
 
     override fun createOrGetExistingState(node: Node, identifier: String?): State =

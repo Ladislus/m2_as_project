@@ -189,7 +189,7 @@ class Flow(
             val exit = createState(callStatement, "Exit ${callStatement.accept(this._printer)}")
 
             this._program._procedures.find { it._name == callStatement._procedureName }?.let { procedure ->
-                val correspondingState = this._nodeToState[procedure]!!
+                val correspondingState = this.getCorrespondingState(procedure)!!
                 entry.addSuccessor(correspondingState)
                 correspondingState.addSuccessor(exit)
             } ?: exitWithCode(
