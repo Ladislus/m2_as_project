@@ -82,7 +82,7 @@ class AvailableExpressionsAnalyse(
 
         // Print the memory
         println("Available expressions at entry:")
-        this._memory.forEach { (k: State, v: MutableSet<Expression>) ->
+        this._memory.toSortedMap { o1, o2 -> o1._index.compareTo(o2._index) }.forEach { (k: State, v: MutableSet<Expression>) ->
             when (k._node) {
                 is Program -> println("\tState ${k._index} (Program ${k._node._identifier ?: "?"}): ${v.joinToString(separator = ", ", prefix = "[ ", postfix = " ]") { it.accept(this._printer) }}")
                 is Procedure -> println("\tState ${k._index} (Procedure ${k._node._name}): ${v.joinToString(separator = ", ", prefix = "[ ", postfix = " ]") { it.accept(this._printer) }}")
