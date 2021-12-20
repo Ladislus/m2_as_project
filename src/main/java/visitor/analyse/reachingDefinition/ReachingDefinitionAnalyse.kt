@@ -93,7 +93,7 @@ class ReachingDefinitionAnalyse(
             when (k._node) {
                 is Program -> {} //println("\tState ${k._index} (Program ${k._node._identifier ?: "?"}): ${v.joinToString(separator = ", ", prefix = "[ ", postfix = " ]") { "(${it.first}, ${if (it.second < 0) "?" else  it.second})" }}")
                 is Procedure -> {} //println("\tState ${k._index} (Procedure ${k._node._name}): ${v.joinToString(separator = ", ", prefix = "[ ", postfix = " ]") { "(${it.first}, ${if (it.second < 0) "?" else  it.second})" }}")
-                else -> println("\tState ${k._index} (Line ${k._node._position._line}) (\"${k._node.accept(this._printer)}\"): ${v.joinToString(separator = ", ", prefix = "[ ", postfix = " ]") { "(${it.first}, ${if (it.second < 0) "?" else  it.second})" }}")
+                else -> println("\tState ${k._index} (\"${k._node.accept(this._printer)}\"): ${v.joinToString(separator = ", ", prefix = "[ ", postfix = " ]") { "(${it.first}, ${if (it.second < 0) "?" else  it.second})" }}")
             }
 
         }
@@ -141,7 +141,7 @@ class ReachingDefinitionAnalyse(
         this._currentMemory -= toDestroy
 
         // GEN
-        this._currentMemory += Pair(assignStatement._variableName, assignStatement._position._line)
+        this._currentMemory += Pair(assignStatement._variableName, this._flow.getCorrespondingState(assignStatement)!!._index)
     }
 
     override fun visit(callStatement: CallStatement) {}
