@@ -1,12 +1,10 @@
 import utils.ExitCode
 import utils.buildAST
 import utils.exitWithCode
-import visitor.analyse.*
+import visitor.analyse.IAnalyse
 import visitor.analyse.availableExpressions.AvailableExpressionsAnalyse
 import visitor.flow.Flow
 import visitor.flow.IFlow
-import visitor.printers.ASTPrinter
-import visitor.printers.Printer
 import java.io.File
 
 fun main(args: Array<String>) {
@@ -23,16 +21,16 @@ fun main(args: Array<String>) {
 //        println("############### AST ###############\n")
 
         println("############### FLOW ###############")
-        val flow: IFlow = Flow(it)
+        val flow: IFlow = Flow(it, false)
         File("./flow.dot").writeText(flow.toDot())
 //        val cmd = "dot -Tpng ./flow.dot -o ./flow.png"
 //        println("[CMD] $cmd")
 //        Runtime.getRuntime().exec(cmd)
         val availableExpressionsAnalyse: IAnalyse = AvailableExpressionsAnalyse(flow)
         availableExpressionsAnalyse.analyse()
-//        val liveVariableAnalyse: IAnalyse = LiveVariableAnalyse(flow)
-//        val reachingDefinitionAnalyse: IAnalyse = ReachingDefinitionAnalyse(flow)
-//        val veryBusyExpressionAnalyse: IAnalyse = VeryBusyExpressionAnalyse(flow)
+//        val liveVariableAnalyse: IAnalyse = LiveVariableAnalyse(flow, true)
+//        val reachingDefinitionAnalyse: IAnalyse = ReachingDefinitionAnalyse(flow, false)
+//        val veryBusyExpressionAnalyse: IAnalyse = VeryBusyExpressionAnalyse(flow, true)
         println("############### FLOW ###############\n")
     }
     exitWithCode(ExitCode.OK)

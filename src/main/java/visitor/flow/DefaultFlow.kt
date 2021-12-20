@@ -4,21 +4,24 @@ import ast.Node
 import ast.Position
 import ast.Program
 import ast.Type
+import utils.ExitCode
+import utils.exitWithCode
 import visitor.DefaultVisitor
-import visitor.printers.Printer
 import visitor.raiseIllegalStateExceptionWithClass
 
 
 abstract class DefaultFlow(
     protected val _program: Program,
+    private val reversed: Boolean
     ): IFlow, DefaultVisitor<Pair<State, List<State>>>() {
 
     private var _counter: Int = 0
-        get() = ++field
-    private var _head: State? = null
+        get() = field++
+    protected var _heads: MutableSet<State> = mutableSetOf()
+    protected var _tails: MutableSet<State> = mutableSetOf()
     private val _states: MutableSet<State> = mutableSetOf()
     private val _stack: ArrayDeque<State> = ArrayDeque()
-    private val _nodeToState: MutableMap<Node, State> = mutableMapOf()
+    protected val _nodeToState: MutableMap<Node, State> = mutableMapOf()
 
     override fun hasNext(): Boolean =
         this._stack.isNotEmpty()
@@ -34,25 +37,31 @@ abstract class DefaultFlow(
         this._stack.add(state)
     }
 
-    override fun reverse(): IFlow {
-        this._head?.let {
+    protected fun initStack() {
+        if (this.reversed) {
+            this.reverse()
+        }
+
+        this._stack += this._heads
+        if (this._stack.isEmpty()) exitWithCode(ExitCode.EMPTY_FLOW)
+    }
+
+    private fun reverse() {
+        if (this._states.isNotEmpty()) {
             this._states.forEach {
                 val tmp = it._successors
                 it._successors = it._predecessors
                 it._predecessors = tmp
             }
         }
-        TODO("Change _head")
-        return this
+        val tmp = this._heads
+        this._heads = this._tails
+        this._tails = tmp
     }
 
-    private fun createState(node: Node, identifier: String?): State {
+    protected fun createState(node: Node, identifier: String?): State {
         val state = State(identifier ?: node.javaClass.toString(), this._counter, node)
         this._states.add(state)
-        if (this._head == null) {
-            this._head = state
-            this._stack.addFirst(state)
-        }
         return state
     }
 
@@ -62,8 +71,7 @@ abstract class DefaultFlow(
     override fun toDot(): String {
         var dot = "digraph G {\n"
         for (state in this._states.sortedBy { it._index }) {
-
-            dot += "\tnode${state._index} [label=\"${state._identifier}\"] ${if (state == this._head) "[color=\"red\"]" else ""};\n"
+            dot += "\tnode${state._index} [style=filled] [label=\"${state._identifier}\"] ${if (state in this._heads) "[fillcolor=\"crimson\"]" else if (state in this._tails) "[fillcolor=\"skyblue1\"]" else "[fillcolor=\"white\"]"};\n"
             dot += "\tnode${state._index} -> {${state._successors.joinToString(" ") { "node" + it._index }}};\n"
         }
         dot += "}"
