@@ -9,8 +9,9 @@ import visitor.printers.Printer
 
 class Flow(
     _program: Program,
+    reversed: Boolean,
     private val _printer: Printer = Printer()
-    ): DefaultFlow(_program) {
+    ): DefaultFlow(_program, reversed) {
 
     init {
         this._program.accept(this)
@@ -143,6 +144,7 @@ class Flow(
     }
 
     override fun visit(callStatement: CallStatement): Pair<State, List<State>> {
+//        TODO("Add entry + exit")
         val state = createOrGetExistingState(callStatement, callStatement.accept(this._printer))
         return Pair(state, listOf(state))
     }

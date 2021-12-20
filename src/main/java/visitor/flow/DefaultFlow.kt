@@ -7,12 +7,12 @@ import ast.Type
 import utils.ExitCode
 import utils.exitWithCode
 import visitor.DefaultVisitor
-import visitor.printers.Printer
 import visitor.raiseIllegalStateExceptionWithClass
 
 
 abstract class DefaultFlow(
     protected val _program: Program,
+    private val reversed: Boolean
     ): IFlow, DefaultVisitor<Pair<State, List<State>>>() {
 
     private var _counter: Int = 0
@@ -37,18 +37,22 @@ abstract class DefaultFlow(
         this._stack.add(state)
     }
 
-    protected fun initStack(): Unit {
+    protected fun initStack() {
         this._heads.addAll(this._states.filter { it._predecessors.isEmpty() })
         if (this._heads.isEmpty()) exitWithCode(ExitCode.EMPTY_FLOW)
 
         this._tails.addAll(this._states.filter { it._successors.isEmpty() })
         if (this._tails.isEmpty()) exitWithCode(ExitCode.EMPTY_FLOW)
 
+        if (this.reversed) {
+            this.reverse()
+        }
+
         this._stack.addAll(this._heads)
         if (this._stack.isEmpty()) exitWithCode(ExitCode.EMPTY_FLOW)
     }
 
-    override fun reverse() {
+    private fun reverse() {
         if (this._states.isNotEmpty()) {
             this._states.forEach {
                 val tmp = it._successors
