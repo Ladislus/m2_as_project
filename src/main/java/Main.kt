@@ -5,6 +5,7 @@ import visitor.analyse.IAnalyse
 import visitor.analyse.availableExpressions.AvailableExpressionsAnalyse
 import visitor.flow.Flow
 import visitor.flow.IFlow
+import java.io.File
 
 fun main(args: Array<String>) {
     if (args.isEmpty()) exitWithCode(ExitCode.NO_INPUT_FILE)
@@ -21,7 +22,7 @@ fun main(args: Array<String>) {
 
         println("############### FLOW ###############")
         val flow: IFlow = Flow(it, false)
-//        File("./flow.dot").writeText(flow.toDot())
+        File("./flow.dot").writeText(flow.toDot())
 //        val cmd = "dot -Tpng ./flow.dot -o ./flow.png"
 //        println("[CMD] $cmd")
 //        Runtime.getRuntime().exec(cmd)
