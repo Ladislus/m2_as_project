@@ -15,6 +15,11 @@ fun exitWithCode(exitCode: ExitCode) {
     exitProcess(exitCode.ordinal)
 }
 
+fun exitWithCode(exitCode: ExitCode, extra: String) {
+    if (exitCode == ExitCode.OK) print("Success")
+    else System.err.println("${exitCode.info} $extra")
+    exitProcess(exitCode.ordinal)
+}
 
 private fun getInputStream(filepath: String): InputStream? {
     return try {
