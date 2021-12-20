@@ -48,7 +48,7 @@ abstract class DefaultFlow(
         if (this._stack.isEmpty()) exitWithCode(ExitCode.EMPTY_FLOW)
     }
 
-    override fun reverse(): Unit {
+    override fun reverse() {
         if (this._states.isNotEmpty()) {
             this._states.forEach {
                 val tmp = it._successors
