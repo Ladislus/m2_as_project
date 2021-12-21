@@ -19,7 +19,7 @@ import visitor.printers.Printer
 
 class LiveVariableAnalyse(
     _flow: IFlow
-): DefaultAnalyse<Unit>(_flow) {
+): DefaultAnalyse<Unit>(_flow, Unit) {
 
     private val _memory: MutableMap<State, MutableSet<String>> = mutableMapOf()
     private val _printer: Printer = Printer()
@@ -89,20 +89,6 @@ class LiveVariableAnalyse(
         }
     }
 
-    override fun visit(program: Program) {}
-
-    override fun visit(procedure: Procedure) {}
-
-    override fun visit(type: Type) {}
-
-    override fun visit(position: Position) {}
-
-    override fun visit(block: Block) {}
-
-    override fun visit(variable: Variable) {}
-
-    override fun visit(variableBlock: VariableBlock) {}
-
     override fun visit(unaryArithmeticExpression: UnaryArithmeticExpression) {
         unaryArithmeticExpression._expression.accept(this)
     }
@@ -135,12 +121,4 @@ class LiveVariableAnalyse(
         // GEN
         assignStatement._value.accept(this)
     }
-
-    override fun visit(callStatement: CallStatement) {}
-
-    override fun visit(ifStatement: IfStatement) {}
-
-    override fun visit(skipStatement: SkipStatement) {}
-
-    override fun visit(whileStatement: WhileStatement) {}
 }
