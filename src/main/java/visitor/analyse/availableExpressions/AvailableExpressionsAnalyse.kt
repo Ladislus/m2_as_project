@@ -87,7 +87,6 @@ class AvailableExpressionsAnalyse(
                 is Procedure -> {} //println("\tState ${k._index} (Procedure ${k._node._name}): ${v.joinToString(separator = ", ", prefix = "[ ", postfix = " ]") { it.accept(this._printer) }}")
                 else -> println("\tState ${k._index} (\"${k._node.accept(this._printer)}\"): ${v.joinToString(separator = ", ", prefix = "[ ", postfix = " ]") { it.accept(this._printer) }}")
             }
-
         }
     }
 
@@ -194,6 +193,7 @@ class AvailableExpressionsAnalyse(
 
     override fun visit(booleanConstant: BooleanConstant): Boolean { return false }
 
+    // TODO("Useless to propagate as it's the flow's job")
     override fun visit(callStatement: CallStatement): Boolean? {
         callStatement._arguments.forEach { it.accept(this) }
         return null

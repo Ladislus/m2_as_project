@@ -95,16 +95,12 @@ class ReachingDefinitionAnalyse(
                 is Procedure -> {} //println("\tState ${k._index} (Procedure ${k._node._name}): ${v.joinToString(separator = ", ", prefix = "[ ", postfix = " ]") { "(${it.first}, ${if (it.second < 0) "?" else  it.second})" }}")
                 else -> println("\tState ${k._index} (\"${k._node.accept(this._printer)}\"): ${v.joinToString(separator = ", ", prefix = "[ ", postfix = " ]") { "(${it.first}, ${if (it.second < 0) "?" else  it.second})" }}")
             }
-
         }
     }
 
     override fun visit(program: Program) {}
 
-    override fun visit(procedure: Procedure) {
-        procedure._variables.forEach { it.accept(this) }
-        procedure._return?.accept(this)
-    }
+    override fun visit(procedure: Procedure) {}
 
     override fun visit(type: Type) {}
 

@@ -1,0 +1,11 @@
+program cleuprogram
+begin
+    a := 0;
+    while (a < 10)
+    do (
+        b := a + 1;
+        c := c + b;
+        c := a + 2
+    );
+    a := b * 2
+end
