@@ -3,6 +3,7 @@ import utils.buildAST
 import utils.exitWithCode
 import visitor.analyse.IAnalyse
 import visitor.analyse.availableExpressions.AvailableExpressionsAnalyse
+import visitor.analyse.liveVariable.LiveVariableAnalyse
 import visitor.analyse.reachingDefinition.ReachingDefinitionAnalyse
 import visitor.flow.Flow
 import visitor.flow.IFlow
@@ -41,13 +42,13 @@ fun main(args: Array<String>) {
         reachingDefinitionAnalyse.analyse()
 
         // Live variable
-//        flow = Flow(it, true)
-//        File("./flow_lv.dot").writeText(flow.toDot())
+        flow = Flow(it, true)
+        File("./flow_lv.dot").writeText(flow.toDot())
 //        val cmd = "dot -Tpng ./flow_lv.dot -o ./flow_lv.png"
 //        println("[CMD] $cmd")
 //        Runtime.getRuntime().exec(cmd)
-//        val liveVariableAnalyse: IAnalyse = LiveVariableAnalyse(flow)
-//        liveVariableAnalyse.analyse()
+        val liveVariableAnalyse: IAnalyse = LiveVariableAnalyse(flow)
+        liveVariableAnalyse.analyse()
 
         // Very busy
 //        flow = Flow(it, true)
