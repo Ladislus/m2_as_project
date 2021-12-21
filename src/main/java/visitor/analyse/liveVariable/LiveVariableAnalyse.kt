@@ -97,9 +97,7 @@ class LiveVariableAnalyse(
 
     override fun visit(position: Position) {}
 
-    override fun visit(block: Block) {
-        block._statements.forEach { it.accept(this) }
-    }
+    override fun visit(block: Block) {}
 
     override fun visit(variable: Variable) {}
 
