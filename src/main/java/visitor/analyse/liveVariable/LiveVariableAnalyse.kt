@@ -79,7 +79,7 @@ class LiveVariableAnalyse(
         }
 
         // Print the memory
-        println("Available expressions at entry:")
+        println("Live variables at entry:")
         this._memory.toSortedMap { o1, o2 -> o1._index.compareTo(o2._index) }.forEach { (k: State, v: MutableSet<String>) ->
             when (k._node) {
                 is Program -> {} //println("\tState ${k._index} (Program ${k._node._identifier ?: "?"}): ${v.joinToString(separator = ", ", prefix = "[ ", postfix = " ]") { it }}")

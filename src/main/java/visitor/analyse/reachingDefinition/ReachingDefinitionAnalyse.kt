@@ -88,7 +88,7 @@ class ReachingDefinitionAnalyse(
         }
 
         // Print the memory
-        println("Reaching expressions at entry:")
+        println("Reaching definition at entry:")
         this._memory.toSortedMap { o1, o2 -> o1._index.compareTo(o2._index) }.forEach { (k: State, v: MutableSet<Pair<String, Int>>) ->
             when (k._node) {
                 is Program -> {} //println("\tState ${k._index} (Program ${k._node._identifier ?: "?"}): ${v.joinToString(separator = ", ", prefix = "[ ", postfix = " ]") { "(${it.first}, ${if (it.second < 0) "?" else  it.second})" }}")
