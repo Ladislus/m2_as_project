@@ -193,6 +193,7 @@ class AvailableExpressionsAnalyse(
 
     override fun visit(booleanConstant: BooleanConstant): Boolean { return false }
 
+    // TODO("Useless to propagate as it's the flow's job")
     override fun visit(callStatement: CallStatement): Boolean? {
         callStatement._arguments.forEach { it.accept(this) }
         return null

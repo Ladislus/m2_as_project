@@ -100,10 +100,7 @@ class ReachingDefinitionAnalyse(
 
     override fun visit(program: Program) {}
 
-    override fun visit(procedure: Procedure) {
-//        procedure._variables.forEach { it.accept(this) }
-//        procedure._return?.accept(this)
-    }
+    override fun visit(procedure: Procedure) {}
 
     override fun visit(type: Type) {}
 
