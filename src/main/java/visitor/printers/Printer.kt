@@ -24,7 +24,7 @@ class Printer: DefaultVisitor<String>() {
             result += "begin\n"
             program._variables.forEach { result += it.accept(this) + "\n" }
             program._statements.forEach { result += it.accept(this) + "\n"}
-            result += "end\n"
+            result += "end"
 
             result
         }
