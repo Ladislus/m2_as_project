@@ -15,9 +15,11 @@ class BinaryArithmeticExpression(
                 other is BinaryArithmeticExpression &&
                 this._operator == other._operator &&
                 (
-                        (this._leftExpression == other._leftExpression && this._rightExpression == other._rightExpression)
-                        ||
+                    (this._leftExpression == other._leftExpression && this._rightExpression == other._rightExpression) ||
+                    (
+                        this._operator in listOf(BinaryArithmeticOperator.PLUS, BinaryArithmeticOperator.MULTIPLY) &&
                         (this._leftExpression == other._rightExpression && this._rightExpression == other._leftExpression)
+                    )
                 )
 
         override fun hashCode(): Int =
