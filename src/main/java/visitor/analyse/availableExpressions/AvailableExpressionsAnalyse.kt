@@ -20,7 +20,7 @@ import visitor.printers.Printer
 
 class AvailableExpressionsAnalyse(
     _flow: IFlow
-    ): DefaultAnalyse<Boolean?>(_flow) {
+    ): DefaultAnalyse<Boolean?>(_flow, null) {
 
     private val _memory: MutableMap<State, MutableSet<Expression>> = mutableMapOf()
     private val _printer: Printer = Printer()
@@ -99,11 +99,7 @@ class AvailableExpressionsAnalyse(
         return false
     }
 
-    override fun visit(procedure: Procedure): Boolean? {
-        // Useless to visit variables declarations in this analysis
-        procedure._statements.forEach { it.accept(this) }
-        return null
-    }
+    override fun visit(procedure: Procedure): Boolean? { return null }
 
 
     override fun visit(binaryArithmeticExpression: BinaryArithmeticExpression): Boolean {
@@ -139,28 +135,6 @@ class AvailableExpressionsAnalyse(
         return false
     }
 
-    override fun visit(program: Program): Boolean? {
-        return null
-    }
-
-    override fun visit(block: Block): Boolean? {
-        // Propagate the visit to all statements
-        block._statements.forEach { it.accept(this) }
-        return null
-    }
-
-    override fun visit(variable: Variable): Boolean? {
-        // Variable can contains expressions
-        variable._expression?.accept(this)
-        return null
-    }
-
-    override fun visit(variableBlock: VariableBlock): Boolean? {
-        // Variable can contains expressions
-        variableBlock._variables.forEach { it.accept(this) }
-        return null
-    }
-
     override fun visit(assignStatement: AssignStatement): Boolean? {
         // GEN
         assignStatement._value.accept(this)
@@ -185,23 +159,7 @@ class AvailableExpressionsAnalyse(
         return null
     }
 
-    override fun visit(type: Type): Boolean? { return null }
-
-    override fun visit(position: Position): Boolean? { return null }
-
     override fun visit(arithmeticConstant: ArithmeticConstant): Boolean { return false }
 
     override fun visit(booleanConstant: BooleanConstant): Boolean { return false }
-
-    // TODO("Useless to propagate as it's the flow's job")
-    override fun visit(callStatement: CallStatement): Boolean? {
-        callStatement._arguments.forEach { it.accept(this) }
-        return null
-    }
-
-    override fun visit(ifStatement: IfStatement): Boolean? { return null }
-
-    override fun visit(skipStatement: SkipStatement): Boolean? { return null }
-
-    override fun visit(whileStatement: WhileStatement): Boolean? { return null }
 }

@@ -5,6 +5,7 @@ import visitor.analyse.IAnalyse
 import visitor.analyse.availableExpressions.AvailableExpressionsAnalyse
 import visitor.analyse.liveVariable.LiveVariableAnalyse
 import visitor.analyse.reachingDefinition.ReachingDefinitionAnalyse
+import visitor.analyse.veryBusyExpression.VeryBusyExpressionAnalyse
 import visitor.flow.Flow
 import visitor.flow.IFlow
 import java.io.File
@@ -51,13 +52,13 @@ fun main(args: Array<String>) {
         liveVariableAnalyse.analyse()
 
         // Very busy
-//        flow = Flow(it, true)
-//        File("./flow_vb.dot").writeText(flow.toDot())
+        flow = Flow(it, true)
+        File("./flow_vb.dot").writeText(flow.toDot())
 //        val cmd = "dot -Tpng ./flow_vb.dot -o ./flow_vb.png"
 //        println("[CMD] $cmd")
 //        Runtime.getRuntime().exec(cmd)
-//        val liveVariableAnalyse: IAnalyse = LiveVariableAnalyse(flow)
-//        liveVariableAnalyse.analyse()
+        val veryBusyExpressionAnalyse: IAnalyse = VeryBusyExpressionAnalyse(flow)
+        veryBusyExpressionAnalyse.analyse()
         println("############### FLOW ###############\n")
     }
     exitWithCode(ExitCode.OK)

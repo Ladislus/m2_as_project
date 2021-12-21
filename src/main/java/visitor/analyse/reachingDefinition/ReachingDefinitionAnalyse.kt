@@ -20,7 +20,7 @@ import java.util.stream.Collectors
 
 class ReachingDefinitionAnalyse(
     _flow: IFlow
-): DefaultAnalyse<Unit>(_flow) {
+): DefaultAnalyse<Unit>(_flow, Unit) {
 
     private val _memory: MutableMap<State, MutableSet<Pair<String, Int>>> = mutableMapOf()
     private val _printer: Printer = Printer()
@@ -88,7 +88,7 @@ class ReachingDefinitionAnalyse(
         }
 
         // Print the memory
-        println("Reaching expressions at entry:")
+        println("Reaching definition at entry:")
         this._memory.toSortedMap { o1, o2 -> o1._index.compareTo(o2._index) }.forEach { (k: State, v: MutableSet<Pair<String, Int>>) ->
             when (k._node) {
                 is Program -> {} //println("\tState ${k._index} (Program ${k._node._identifier ?: "?"}): ${v.joinToString(separator = ", ", prefix = "[ ", postfix = " ]") { "(${it.first}, ${if (it.second < 0) "?" else  it.second})" }}")
@@ -97,20 +97,6 @@ class ReachingDefinitionAnalyse(
             }
         }
     }
-
-    override fun visit(program: Program) {}
-
-    override fun visit(procedure: Procedure) {}
-
-    override fun visit(type: Type) {}
-
-    override fun visit(position: Position) {}
-
-    override fun visit(block: Block) {}
-
-    override fun visit(variable: Variable) {}
-
-    override fun visit(variableBlock: VariableBlock) {}
 
     override fun visit(unaryArithmeticExpression: UnaryArithmeticExpression) {}
 
@@ -139,12 +125,4 @@ class ReachingDefinitionAnalyse(
         // GEN
         this._currentMemory += Pair(assignStatement._variableName, this._flow.getCorrespondingState(assignStatement)!!._index)
     }
-
-    override fun visit(callStatement: CallStatement) {}
-
-    override fun visit(ifStatement: IfStatement) {}
-
-    override fun visit(skipStatement: SkipStatement) {}
-
-    override fun visit(whileStatement: WhileStatement) {}
 }

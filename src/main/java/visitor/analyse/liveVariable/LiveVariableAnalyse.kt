@@ -19,7 +19,7 @@ import visitor.printers.Printer
 
 class LiveVariableAnalyse(
     _flow: IFlow
-): DefaultAnalyse<Unit>(_flow) {
+): DefaultAnalyse<Unit>(_flow, Unit) {
 
     private val _memory: MutableMap<State, MutableSet<String>> = mutableMapOf()
     private val _printer: Printer = Printer()
@@ -79,7 +79,7 @@ class LiveVariableAnalyse(
         }
 
         // Print the memory
-        println("Available expressions at entry:")
+        println("Live variables at entry:")
         this._memory.toSortedMap { o1, o2 -> o1._index.compareTo(o2._index) }.forEach { (k: State, v: MutableSet<String>) ->
             when (k._node) {
                 is Program -> {} //println("\tState ${k._index} (Program ${k._node._identifier ?: "?"}): ${v.joinToString(separator = ", ", prefix = "[ ", postfix = " ]") { it }}")
@@ -88,22 +88,6 @@ class LiveVariableAnalyse(
             }
         }
     }
-
-    override fun visit(program: Program) {}
-
-    override fun visit(procedure: Procedure) {}
-
-    override fun visit(type: Type) {}
-
-    override fun visit(position: Position) {}
-
-    override fun visit(block: Block) {
-        block._statements.forEach { it.accept(this) }
-    }
-
-    override fun visit(variable: Variable) {}
-
-    override fun visit(variableBlock: VariableBlock) {}
 
     override fun visit(unaryArithmeticExpression: UnaryArithmeticExpression) {
         unaryArithmeticExpression._expression.accept(this)
@@ -137,12 +121,4 @@ class LiveVariableAnalyse(
         // GEN
         assignStatement._value.accept(this)
     }
-
-    override fun visit(callStatement: CallStatement) {}
-
-    override fun visit(ifStatement: IfStatement) {}
-
-    override fun visit(skipStatement: SkipStatement) {}
-
-    override fun visit(whileStatement: WhileStatement) {}
 }
