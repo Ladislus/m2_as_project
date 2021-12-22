@@ -14,6 +14,17 @@ import java.io.File
 
 fun help() {
     println("Usage: java <input-file> [<flag>]*")
+    println("Flags:")
+    println("    [Options]")
+    println("       -h, --help: Print this help message")
+    println("       -v, --verbose: Print the program using the Printer visitor")
+    println("       -a, --ast: Print the program's AST using the ASTPrinter visitor")
+    println("       -d, --dot: Convert the outputted dot file to a PNG iamge representing the flow (Require dot executable in the path)")
+    println("    [Analysis]")
+    println("       -ae: Realise the 'Available Expression' analysis on the program")
+    println("       -rd: Realise the 'Reaching Definition' analysis on the program")
+    println("       -lv: Realise the 'Live Variable' analysis on the program")
+    println("       -vb: Realise the 'Very Busy Expression' analysis on the program")
 }
 
 fun main(args: Array<String>) {
